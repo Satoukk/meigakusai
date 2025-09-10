@@ -16,7 +16,7 @@ export default function Card(){
       return;
     }
     const nextSquares=squares.slice();
-    nextSquares[i]="/laughing-man.png";
+    nextSquares[i]="/logo.png";
     setSquares(nextSquares)
   }
   const clear=Complete(squares);
