@@ -1,4 +1,3 @@
-// App.js
 import { useState } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Card from "./Card";

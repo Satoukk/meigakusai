@@ -1,17 +1,9 @@
-/*
- * 追加・修正する部分
- * .board-row のスタイルを修正します
- */
+
 .board-row {
   display: flex;
   justify-content: center;
 }
 
-/*
- * 以下は元々のCSS
- */
-
-/* Body: トリオン体のような暗闇と輝き */
 body {
   display: flex;
   justify-content: center;
@@ -38,7 +30,6 @@ body::before {
   100% { opacity: 0.25; }
 }
 
-/* Card Container: 全体を囲むフレーム */
 .card-container {
   padding: 20px;
   background: rgba(13, 27, 42, 0.5); /* 半透明のダークブルー */
@@ -48,7 +39,6 @@ body::before {
   box-shadow: 0 0 30px rgba(8, 247, 254, 0.2);
 }
 
-/* Square: トリオンキューブのようなマス目 */
 .square {
   width: 100px;
   height: 100px;
@@ -106,7 +96,6 @@ body::before {
   filter: drop-shadow(0 0 15px #08f7fe) drop-shadow(0 0 30px #00f5d4);
 }
 
-/* Status: 本部からの通信のようなテキスト */
 .status {
   font-size: 2.8rem;
   font-weight: bold;
