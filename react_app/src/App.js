@@ -12,13 +12,14 @@ export default function App() {
 
   return (
     <BrowserRouter>
+      <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Train+One&family=Rampart+One&display=swap" rel="stylesheet"></link>
       <div style={{ position: "fixed", top: 10, left: 10, zIndex: 10 }}>
-        <Link to="/" style={{ marginRight: 10, color: "cyan" }}>Card1</Link>
-        <Link to="/card2" style={{ color: "cyan" }}>Card2</Link>
+        <Link to="/" style={{textDecoration:"none",fontFamily:'DotGothic16',fontSize:"50px",marginRight: 30,color: "cyan" }}>ビンゴカード1</Link>
+        <Link to="/card2" style={{textDecoration:"none",fontFamily:'DotGothic16',fontSize:"50px",color: "cyan" }}>ビンゴカード2</Link>
       </div>
 
       <Routes>
-        <Route path="/" element={<Card squares={squares1} setSquares={setSquares1} />} />
+        <Route path="/" element={<Card squares={squares1} setSquares={setSquares1} />}/>
         <Route path="/card2" element={<Card2 squares={squares2} setSquares={setSquares2} />} />
       </Routes>
     </BrowserRouter>
