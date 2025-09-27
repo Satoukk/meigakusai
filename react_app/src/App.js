@@ -15,7 +15,7 @@ const Navigation = ({ squares1, squares2 }) => {
     fontSize: "50px",
     marginRight: 30,
     color: "cyan",
-    transition: "color 0.3s, text-shadow 0.3s"
+    textShadow: "0 0 10px cyan, 0 0 20px cyan",
   };
 
   const activeLinkStyle = {
