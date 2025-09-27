@@ -11,7 +11,7 @@ export default function Card2({ squares, setSquares }) {
   function handleClick(i) {
     if (squares[i] || calculateWinner(squares)) return;
     const nextSquares = squares.slice();
-    nextSquares[i] = "/smile.png";
+    nextSquares[i] = "/NKC2.png";
     setSquares(nextSquares);
   }
 
