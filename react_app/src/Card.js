@@ -13,9 +13,9 @@ export default function Card({ squares, setSquares }) {
     nextSquares[i] = "/NKC2.png";
     setSquares(nextSquares);
   }
-
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Train+One&family=Rampart+One&display=swap" rel="stylesheet"></link>
   const winner = calculateWinner(squares);
-  const status = winner ? "コンプリート!" : "";
+  const status = winner ? "ビンゴ!" : "";
 
   return (
     <>
