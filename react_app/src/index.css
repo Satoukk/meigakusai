@@ -102,6 +102,9 @@ body::before {
 }
 
 .status {
+    display:"flex";
+    justify-content: center;
+    text-align: center;
     font-family:"DotGothic16", monospace;
     font-size: 3.0rem;
     font-weight: bold;
