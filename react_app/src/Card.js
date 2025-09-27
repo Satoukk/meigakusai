@@ -15,7 +15,7 @@ export default function Card({ squares, setSquares }) {
   }
   <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Train+One&family=Rampart+One&display=swap" rel="stylesheet"></link>
   const winner = calculateWinner(squares);
-  const status = winner ? "ビンゴ!" : "";
+  const status = winner ? "ＢＩＮＧＯ!" : "";
 
   return (
     <>

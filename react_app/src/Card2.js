@@ -16,7 +16,7 @@ export default function Card2({ squares, setSquares }) {
   }
 
   const winner = calculateWinner(squares);
-  const status = winner ? "コンプリート!" : "";
+  const status = winner ? "ＢＩＮＧＯ!" : "";
 
   return (
     <>
