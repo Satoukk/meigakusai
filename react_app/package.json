@@ -37,6 +37,8 @@
     ]
   },
   "devDependencies": {
-    "react-scripts": "^5.0.1"
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.6.1",
+    "react-scripts": "^5.0.1",
+    "source-map": "^0.6.1"
   }
 }
