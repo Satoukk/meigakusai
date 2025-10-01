@@ -10,7 +10,7 @@ export default function Card({ squares, setSquares }) {
   function handleClick(i) {
     if (squares[i] || calculateWinner(squares)) return;
     const nextSquares = squares.slice();
-    nextSquares[i] = "/NKC2.png";
+    nextSquares[i] = "/poby.png";
     setSquares(nextSquares);
   }
   <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Train+One&family=Rampart+One&display=swap" rel="stylesheet"></link>

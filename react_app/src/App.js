@@ -37,16 +37,16 @@ function Card({ squares, setSquares }) {
   function handleClick(i) {
     if (squares[i] || bingo_judge(squares)) return;
     const nextSquares = squares.slice();
-    nextSquares[i] = "/NKC2.png"; // 元のスタンプ画像パスを維持
+    nextSquares[i] = "/povy.png";
     setSquares(nextSquares);
   }
 
   const winner = bingo_judge(squares);
-  const status = winner ? "ＢＩＮＧＯ！！！" : ""; 
+  const status = winner ? "ビンゴ！おめでとう！！": "名学祭へようこそ！"; 
 
   return (
     <div className="card-wrapper">
-      <div className="status">{status}</div>
+      <div className="status">{status}<img src='/povy_smile.png' width="70" height="70" alt="ポヴィの顔" /></div>
       <div className="board-grid">
         {Array.from({ length: 25 }, (_, idx) => (
           <Square key={idx} index={idx} value={squares[idx]} onClick={() => handleClick(idx)} />
@@ -120,8 +120,8 @@ export default function App() {
   const [squares2, setSquares2] = useState(Array(25).fill(null));
 
   // センターフリースペースの設定
-  if (!squares1[12]) squares1[12] = "/NKC2.png";
-  if (!squares2[12]) squares2[12] = "/NKC2.png";
+  if (!squares1[12]) squares1[12] = "/povy.png";
+  if (!squares2[12]) squares2[12] = "/povy.png";
 
   return (
     <BrowserRouter>
