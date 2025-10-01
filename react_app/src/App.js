@@ -18,13 +18,13 @@ function bingo_judge(squares) {
 }
 
 
-function Square({ value, onClick, index }) {
+function Square({ value, Stamp, index }) { // StampをhandleClickの代わりに受け取る
   //真ん中にスタンプを押す
   const isFreeSpace = index === 12;
   const isClicked = !!value; 
   
   return (
-    <button className={`square ${isClicked ? 'clicked' : ''} ${isFreeSpace ? 'free-space' : ''}`} onClick={onClick}>
+    <button className={`square ${isClicked ? 'clicked' : ''} ${isFreeSpace ? 'free-space' : ''}`} onClick={Stamp}>
       {value ? <img src={value} alt="stamp" style={{ width: "70%", height: "70%" }} /> : null}
     </button>
   );
@@ -35,22 +35,60 @@ function Square({ value, onClick, index }) {
  */
 function Card({ squares, setSquares }) {
   function handleClick(i) {
+    // 既にスタンプがあるか、またはビンゴが成立していたら何もしない
     if (squares[i] || bingo_judge(squares)) return;
+
     const nextSquares = squares.slice();
-    nextSquares[i] = "/povy.png";
+    nextSquares[i] = "/povy.png"; 
     setSquares(nextSquares);
   }
 
   const winner = bingo_judge(squares);
-  const status = winner ? "ビンゴ！おめでとう！！": "名学祭へようこそ！"; 
+  const status = winner ? "ビンゴ！！" : "名学祭へ　ようこそ！"; 
 
   return (
     <div className="card-wrapper">
-      <div className="status">{status}<img src='/povy_smile.png' width="70" height="70" alt="ポヴィの顔" /></div>
+      <div className={`status ${winner ? 'bingo-win' : 'connecting'}`}>
+        {status}
+        <img src='/povy_smile.png' width="70" height="70" alt="ポヴィの顔" />
+      </div>
+      
       <div className="board-grid">
-        {Array.from({ length: 25 }, (_, idx) => (
-          <Square key={idx} index={idx} value={squares[idx]} onClick={() => handleClick(idx)} />
-        ))}
+        <div className="board-row">
+          <Square index={0} value={squares[0]} Stamp={()=>handleClick(0)}/>
+          <Square index={1} value={squares[1]} Stamp={()=>handleClick(1)}/>
+          <Square index={2} value={squares[2]} Stamp={()=>handleClick(2)}/>
+          <Square index={3} value={squares[3]} Stamp={()=>handleClick(3)}/>
+          <Square index={4} value={squares[4]} Stamp={()=>handleClick(4)}/>
+        </div>
+        <div className="board-row">
+          <Square index={5} value={squares[5]} Stamp={()=>handleClick(5)}/>
+          <Square index={6} value={squares[6]} Stamp={()=>handleClick(6)}/>
+          <Square index={7} value={squares[7]} Stamp={()=>handleClick(7)}/>
+          <Square index={8} value={squares[8]} Stamp={()=>handleClick(8)}/>
+          <Square index={9} value={squares[9]} Stamp={()=>handleClick(9)}/>
+        </div>
+        <div className="board-row">
+          <Square index={10} value={squares[10]} Stamp={()=>handleClick(10)}/>
+          <Square index={11} value={squares[11]} Stamp={()=>handleClick(11)}/>
+          <Square index={12} value={squares[12]} Stamp={()=>handleClick(12)}/> {/* Free Space */}
+          <Square index={13} value={squares[13]} Stamp={()=>handleClick(13)}/>
+          <Square index={14} value={squares[14]} Stamp={()=>handleClick(14)}/>
+        </div>
+        <div className="board-row">
+          <Square index={15} value={squares[15]} Stamp={()=>handleClick(15)}/>
+          <Square index={16} value={squares[16]} Stamp={()=>handleClick(16)}/>
+          <Square index={17} value={squares[17]} Stamp={()=>handleClick(17)}/>
+          <Square index={18} value={squares[18]} Stamp={()=>handleClick(18)}/>
+          <Square index={19} value={squares[19]} Stamp={()=>handleClick(19)}/>
+        </div>
+        <div className="board-row">
+          <Square index={20} value={squares[20]} Stamp={()=>handleClick(20)}/>
+          <Square index={21} value={squares[21]} Stamp={()=>handleClick(21)}/>
+          <Square index={22} value={squares[22]} Stamp={()=>handleClick(22)}/>
+          <Square index={23} value={squares[23]} Stamp={()=>handleClick(23)}/>
+          <Square index={24} value={squares[24]} Stamp={()=>handleClick(24)}/>
+        </div>
       </div>
     </div>
   );
@@ -64,7 +102,7 @@ function Card2({ squares, setSquares }) {
 /**
  * ナビゲーション
  */
-const Navigation = ({ squares1, squares2 }) => {
+const Navigation = () => {
   const location = useLocation();
 
   const isCard1Active = location.pathname === "/";
@@ -72,17 +110,20 @@ const Navigation = ({ squares1, squares2 }) => {
 
   const baseLinkStyle = {
     textDecoration: "none",
-    fontFamily: 'DotGothic16, monospace',
-    fontSize: "clamp(1.5rem, 5vw, 2.8rem)",
+    fontFamily: 'Share Tech Mono, monospace', // ターミナル風フォント
+    fontSize: "clamp(1.2rem, 4vw, 2.5rem)",
     marginRight: "clamp(15px, 5vw, 30px)",
-    color: "#00eeff",
-    textShadow: "0 0 5px #00eeff, 0 0 15px #00eeff",
+    color: "cyan",
+    textShadow: "0 0 5px cyan, 0 0 15px cyan",
     transition: 'all 0.3s ease',
+    letterSpacing: '1px',
+    fontWeight: 'bold',
   };
 
   const activeLinkStyle = {
-    color: "#aaff00",
-    textShadow: "0 0 10px #aaff00, 0 0 25px #aaff00, 0 0 40px #aaff00",
+    color: "var(--neon-green)",
+    textShadow: "0 0 10px var(--neon-green), 0 0 25px var(--neon-green), 0 0 40px var(--neon-green)",
+    transform: 'scale(1.05)',
   };
 
   return (
@@ -94,7 +135,7 @@ const Navigation = ({ squares1, squares2 }) => {
           ...(isCard1Active ? activeLinkStyle : {}),
         }}
       >
-        {isCard1Active ? "▶ " : ""}ビンゴカード1
+        {isCard1Active ? ">> " : "FILE: "}BINGO-CARD-1
       </Link>
 
       <Link
@@ -105,15 +146,11 @@ const Navigation = ({ squares1, squares2 }) => {
           marginRight: 0
         }}
       >
-        {isCard2Active ? "▶ " : ""}ビンゴカード2
+        {isCard2Active ? ">> " : "FILE: "}BINGO-CARD-2
       </Link>
     </div>
   );
 };
-
-// -------------------------------------------------------------------
-// メインアプリケーションコンポーネント
-// -------------------------------------------------------------------
 
 export default function App() {
   const [squares1, setSquares1] = useState(Array(25).fill(null));
@@ -125,10 +162,9 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      {/*フォントを読み込み*/}
-      <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Train+One&family=Rampart+One&display=swap" rel="stylesheet"></link>
+      <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet"></link>
 
-      <Navigation squares1={squares1} squares2={squares2} />
+      <Navigation />
 
       <div className="main-3d-container"> 
         <div className="main-content">
@@ -141,9 +177,12 @@ export default function App() {
       
       <style jsx="true">{`
         :root {
-            --neon-cyan: #08f7fe;
-            --bg-dark: #010408;
-            --main-font: 'DotGothic16', monospace;
+            --neon-cyan: #08f7fe;      
+            --neon-green: #00ff66;  
+            --bg-dark: #010408;        
+            --main-font: 'Share Tech Mono', monospace;
+            --title-font: 'Press Start 2P', cursive;
+            --glitch-speed: 0.1s; 
         }
 
         body {
@@ -154,184 +193,239 @@ export default function App() {
             min-height: 100vh;
             margin: 0;
             padding-top: 100px; 
-            background: radial-gradient(circle at center, #000000 0%, #010408 100%);
-            overflow-x: hidden;
+            background: linear-gradient(145deg, #020205 0%, #000000 100%);
+            overflow-x: hidden; /*横スクロールを完全に禁止 */
             font-family: var(--main-font);
             color: var(--neon-cyan);
             perspective: 1000px;
+            position: relative;
         }
 
         body::before {
             content: "";
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: 
-                linear-gradient(to right, #08f7fe40 1px, transparent 1px),
-                linear-gradient(to bottom, #08f7fe40 1px, transparent 1px);
-            background-size: 50px 50px;
-            opacity: 0.15;
             z-index: -1;
-            animation: gridScroll 30s linear infinite;
+            opacity: 0.15;
+            
+            background: 
+                linear-gradient(to right, var(--neon-cyan) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--neon-cyan) 1px, transparent 1px),
+                
+                repeating-linear-gradient(
+                    0deg, 
+                    rgba(0,0,0,0.2) 0, 
+                    rgba(0,0,0,0.3) 1px, 
+                    transparent 2px, 
+                    transparent 3px
+                );
+
+            background-size: 50px 50px, 50px 50px, 100% 5px;
+            
+            animation: 
+                gridScroll 30s linear infinite, 
+                noiseFlicker 0.1s step-end infinite;
+        }
+
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: -1;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg, 
+                rgba(0,0,0,0.1), 
+                rgba(255,255,255,0.05) 1px, 
+                transparent 2px 
+            );
+            background-size: 100% 4px;
+            opacity: 0.5;
+            animation: scanlineMovement 10s linear infinite; 
+        }
+        
+        @keyframes scanlineMovement {
+            from { background-position: 0 0; }
+            to { background-position: 0 100%; }
         }
 
         @keyframes gridScroll {
             0% { background-position: 0 0; }
-            100% { background-position: 500px 500px; }
+            100% { background-position: 500px 500px; } 
         }
 
+        @keyframes noiseFlicker {
+            0% { opacity: 0.15; }
+            50% { opacity: 0.1; }
+            100% { opacity: 0.2; }
+        }
+        /* ------------------------------------------------------- */
 
 
         .main-3d-container {
-          transform: rotateX(5deg) translateY(-20px); /* 画面を少し傾けてコンソール感を出す */
+          transform: rotateX(5deg) translateY(-20px); 
           transition: transform 0.5s ease-out;
-          box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5); /* 影で浮いているように見せる */
+          box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5);
+          animation: terminalGlow 2s infinite alternate;
+        }
+        @keyframes terminalGlow {
+            0% { box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5); }
+            100% { box-shadow: 0 50px 100px rgba(0, 0, 0, 0.6), 0 0 10px rgba(8, 247, 254, 0.1); }
         }
 
         .navigation-bar {
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          padding: 10px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background: rgba(0, 0, 0, 0.95);
-          backdrop-filter: blur(8px);
-          border-bottom: 3px solid rgba(0, 238, 255, 0.7); /* 境界線を強調 */
-          box-shadow: 0 0 20px rgba(0, 238, 255, 0.4);
-          z-index: 100;
+          border-bottom: 5px solid var(--neon-cyan); 
+          box-shadow: 0 0 30px rgba(8, 247, 254, 0.6);
         }
         
         .card-wrapper {
             padding: 20px;
-            background: rgba(10, 20, 30, 0.8);
-            border-radius: 16px;
+            background: rgba(10, 20, 30, 0.85); 
+            border-radius: 8px; 
             backdrop-filter: blur(10px);
-            border: 2px solid var(--neon-cyan);
+            border: 2px solid var(--neon-green); 
             box-shadow: 
-                0 0 10px rgba(8, 247, 254, 0.6),
-                0 0 30px rgba(8, 247, 254, 0.4),
-                inset 0 0 15px rgba(8, 247, 254, 0.2);
+                0 0 15px rgba(0, 255, 102, 0.6), 
+                inset 0 0 20px rgba(0, 255, 102, 0.3); 
             margin: 20px auto;
             width: fit-content;
-            max-width: 95vw;
+            max-width: 95vw; 
             box-sizing: border-box;
+            transform: rotateX(2deg) rotateY(-2deg); 
+            transition: all 0.5s ease-out;
         }
         
         .board-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
+            display: grid; 
+            grid-template-columns: repeat(1, 1fr); 
+            gap: 6px; 
             width: 550px; 
+            max-width: 100%; 
             margin: 0 auto;
+            border: 1px solid rgba(0, 255, 102, 0.5);
+            box-shadow: inset 0 0 10px rgba(0, 255, 102, 0.3);
+            padding: 5px;
+            box-sizing: border-box;
+        }
+        
+        .board-row {
+            display: grid; 
+            grid-template-columns: repeat(5, 1fr); 
+            gap: 6px; 
         }
 
         .square {
             width: 100%;
             height: auto;
             aspect-ratio: 1 / 1;
-            background: rgba(0, 255, 200, 0.05);
+            background: rgba(0, 255, 102, 0.05); 
             border: 1px solid var(--neon-cyan);
-            border-radius: 6px;
-            box-shadow: inset 0 0 10px rgba(0, 255, 200, 0.2), 0 0 5px rgba(0, 255, 200, 0.3);
-            transition: all 0.2s ease-out, transform 0.1s;
+            border-radius: 4px; 
+            box-shadow: inset 0 0 8px rgba(8, 247, 254, 0.2), 0 0 3px rgba(8, 247, 254, 0.3);
+            transition: all 0.15s ease-out;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .square:hover:not(.clicked) {
-            transform: scale(1.05);
-            border-color: #ffffff;
+            transform: scale(1.02);
+            border-color: var(--neon-green);
             box-shadow: 
-              inset 0 0 20px rgba(255, 255, 255, 0.5), /* 内側の強い白光 */
-              0 0 15px var(--neon-cyan), 
-              0 0 30px var(--neon-cyan);
+                inset 0 0 15px rgba(0, 255, 102, 0.5), 
+                0 0 10px var(--neon-green), 
+                0 0 20px rgba(0, 255, 102, 0.4),
+                -1px 0 0 var(--neon-magenta), 
+                1px 0 0 var(--neon-cyan); 
         }
 
         /* クリック済み (スタンプあり) の状態 */
         .square.clicked {
-            background: rgba(0, 255, 200, 0.2); /* クリック後は少し明るく */
+            background: rgba(0, 255, 102, 0.3); 
             box-shadow: 
-              inset 0 0 20px rgba(0, 255, 200, 0.8), /* 内側を強く光らせる */
-              0 0 10px #aaff00; /* ライムグリーンの光を追加 */
+                inset 0 0 25px rgba(0, 255, 102, 0.8), 
+                0 0 10px var(--neon-green); 
+            border-color: var(--neon-green);
+            cursor: default;
+            animation: glitchClick 0.4s ease-in-out;
+        }
+        @keyframes glitchClick {
+            0% { transform: translate(0); }
+            25% { transform: translate(1px, -1px); }
+            50% { transform: translate(-1px, 1px); }
+            75% { transform: translate(1px, 1px); }
+            100% { transform: translate(0); }
         }
         
         /* センターフリースペースを強調 */
         .square.free-space {
-            background: cyan
-            border: 2px solid var(--neon-pink);
+            background: rgba(255, 255, 255, 0.3); 
+            border: 2px solid white; 
             box-shadow: 
-              0 0 15px var(--neon-cyan), 
-              inset 0 0 10px var(--neon-cyan);
-            animation: pulseFreeSpace 2s infinite alternate;
+                0 0 18px var(white), 
+                inset 0 0 12px var(white);
+            animation: pulseFreeSpace 1.5s infinite alternate;
         }
 
         @keyframes pulseFreeSpace {
-            0% { opacity: 1; }
-            100% { opacity: 0.8; }
+            0% { opacity: 1; transform: scale(1.0); }
+            100% { opacity: 0.7; transform: scale(0.98); }
         }
 
         .square img {
-            width: 70%;
-            height: 70%;
-            filter: drop-shadow(0 0 10px #08f7fe) drop-shadow(0 0 20px #00f5d4);
+            filter: drop-shadow(0 0 8px var(--neon-green)) drop-shadow(0 0 15px rgba(0, 255, 102, 0.5));
             transition: transform 0.3s ease, filter 0.3s ease;
         }
 
-        /* --- ステータス (BINGO!) --- */
+        /*ステータス*/
         .status {
             text-align: center;
-            font-family: 'Rampart One', sans-serif; /* BINGO!をより目立つフォントに変更 */
-            font-size: 3.5rem;
+            font-family: var(--title-font); 
+            font-size: 45px;
             font-weight: bold;
-            color: #aaff00; /* BINGO時はライムグリーン */
-            text-shadow: 
-                0 0 10px #aaff00, 
-                0 0 30px #aaff00,
-                0 0 60px rgba(170, 255, 0, 0.8);
-            margin-bottom: 40px;
-            animation: glowText 0.8s ease-in-out infinite alternate; /* 点滅速度を上げる */
-            letter-spacing: 5px; /* 字間を広げる */
+            letter-spacing: 2px;
             text-transform: uppercase;
-        }
-
-        @keyframes glowText {
-            0% { text-shadow: 0 0 10px #aaff00, 0 0 20px #aaff00; }
-            100% { text-shadow: 0 0 30px #aaff00, 0 0 70px rgba(170, 255, 0, 0.8), 0 0 100px rgba(170, 255, 0, 0.5); }
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
         }
         
-       /*スマホ対応*/
-       
+        
+        
+        
+        /*スマホ対応*/
+        
         @media (max-width: 600px) {
             
-            body {
-                padding-top: 60px;
-            }
+            body { padding-top: 70px; }
 
-            .main-3d-container {
-                transform: rotateX(0deg) translateY(0); /* モバイルでは傾きを無効化 */
+            .main-3d-container { 
+                animation: none; 
+                transform: none; /* 傾きを解除 */
             }
 
             .board-grid {
-                width: 95vw; 
-                max-width: 450px;
-                gap: 4px;
+                width: 100%;
+                max-width: 400px; 
+                gap: 3px;
+                padding: 3px;
             }
+            .board-row { gap: 3px; }
 
-            .status {
-                font-size: 1.8rem;
-                margin-bottom: 15px;
-                letter-spacing: 2px;
-            }
+            .status { font-size: 45px; margin-bottom: 15px; }
 
-            .card-wrapper {
+            .card-wrapper { 
+                transform: none;
                 padding: 10px;
                 margin-top: 10px;
             }
 
             .square {
                 border-width: 1px;
-                border-radius: 5px;
-                box-shadow: inset 0 0 5px rgba(0, 255, 200, 0.2), 0 0 3px rgba(0, 255, 200, 0.2);
+                border-radius: 3px;
             }
         }
       `}</style>
