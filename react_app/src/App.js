@@ -135,7 +135,7 @@ const Navigation = () => {
           ...(isCard1Active ? activeLinkStyle : {}),
         }}
       >
-        {isCard1Active ? ">> " : "FILE: "}BINGO-CARD-1
+        {isCard1Active ? ">>" : "FILE: "}ビンゴカード/1
       </Link>
 
       <Link
@@ -146,7 +146,7 @@ const Navigation = () => {
           marginRight: 0
         }}
       >
-        {isCard2Active ? ">> " : "FILE: "}BINGO-CARD-2
+        {isCard2Active ? ">>" : "FILE: "}ビンゴカード/2
       </Link>
     </div>
   );
