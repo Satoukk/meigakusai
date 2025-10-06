@@ -50,7 +50,14 @@ function Card({ squares, setSquares }) {
     <div className="card-wrapper">
       <div className={`status ${winner ? 'bingo-win' : 'connecting'}`}>
         {status}
-        <img src='/povy_smile.png' width="70" height="70" alt="ポヴィの顔" />
+        {/* ビンゴ成立時に bingo-win-img クラスを適用してアニメーションさせる */}
+        <img 
+          src='/povy_smile.png' 
+          width="70" 
+          height="70" 
+          alt="ポヴィの顔" 
+          className={winner ? 'bingo-win-img' : 'povy'}
+        />
       </div>
       
       <div className="board-grid">
@@ -156,7 +163,6 @@ export default function App() {
   const [squares1, setSquares1] = useState(Array(25).fill(null));
   const [squares2, setSquares2] = useState(Array(25).fill(null));
 
-  // センターフリースペースの設定
   if (!squares1[12]) squares1[12] = "/povy.png";
   if (!squares2[12]) squares2[12] = "/povy.png";
 
@@ -177,9 +183,9 @@ export default function App() {
       
       <style jsx="true">{`
         :root {
-            --neon-cyan: #08f7fe;      
-            --neon-green: #00ff66;  
-            --bg-dark: #010408;        
+            --neon-cyan: #08f7fe;       
+            --neon-green: #00ff66;    
+            --bg-dark: #010408;         
             --main-font: 'Share Tech Mono', monospace;
             --title-font: 'Press Start 2P', cursive;
             --glitch-speed: 0.1s; 
@@ -259,7 +265,16 @@ export default function App() {
             50% { opacity: 0.1; }
             100% { opacity: 0.2; }
         }
-        /* ------------------------------------------------------- */
+
+
+        @keyframes fluffyBounce {
+            0%, 100% {
+                transform: translateY(0) rotate(0deg); 
+            }
+            50% {
+                transform: translateY(-15px) rotate(2deg) scale(1.05); 
+            }
+        }
 
 
         .main-3d-container {
@@ -340,7 +355,7 @@ export default function App() {
                 1px 0 0 var(--neon-cyan); 
         }
 
-        /* クリック済み (スタンプあり) の状態 */
+        /* スタンプありの状態 */
         .square.clicked {
             background: rgba(0, 255, 102, 0.3); 
             box-shadow: 
@@ -363,8 +378,8 @@ export default function App() {
             background: rgba(255, 255, 255, 0.3); 
             border: 2px solid white; 
             box-shadow: 
-                0 0 18px var(white), 
-                inset 0 0 12px var(white);
+                0 0 18px white, 
+                inset 0 0 12px white;
             animation: pulseFreeSpace 1.5s infinite alternate;
         }
 
@@ -391,11 +406,23 @@ export default function App() {
             align-items: center;
             justify-content: center;
             gap: 10px;
+            
+        }
+        .povy{
+          animation: fluffyBounce 2s cubic-bezier(0.4, 0.0, 0.2, 1.0) infinite alternate;
+          transform-origin: center bottom;
+        }
+        .status.bingo-win {
+            color: var(--neon-green);
+            text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
         }
         
-        
-        
-        
+        .bingo-win-img {
+            animation: fluffyBounce 2s cubic-bezier(0.4, 0.0, 0.2, 1.0) infinite alternate;
+            transform-origin: center bottom;
+            filter: drop-shadow(0 0 15px var(--neon-green));
+        }
+
         /*スマホ対応*/
         
         @media (max-width: 600px) {
@@ -404,7 +431,7 @@ export default function App() {
 
             .main-3d-container { 
                 animation: none; 
-                transform: none; /* 傾きを解除 */
+                transform: none;
             }
 
             .board-grid {
