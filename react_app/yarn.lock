@@ -1904,6 +1904,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/emscripten@^1.41.2":
+  version "1.41.2"
+  resolved "https://registry.npmjs.org/@types/emscripten/-/emscripten-1.41.2.tgz"
+  integrity sha512-0EVXosRnffZuF+rsMM1ZVbfpwpvL2/hWycYQ/0GaH/VaoSJvcSmMl6fiPel9TZXHL3EhANxzqKOVFC6NFXyn8A==
+
 "@types/eslint-scope@^3.7.7":
   version "3.7.7"
   resolved "https://registry.npmjs.org/@types/eslint-scope/-/eslint-scope-3.7.7.tgz"
@@ -2367,6 +2372,14 @@
   version "4.2.2"
   resolved "https://registry.npmjs.org/@xtuc/long/-/long-4.2.2.tgz"
   integrity sha512-NuHqBY1PB/D8xU6s/thBgOAiAP7HOYDQ32+BFZILJ8ivkUkAHQnWfn6WhL79Owj1qmUnoN/YPhktdIoucipkAQ==
+
+"@yudiel/react-qr-scanner@^2.3.1":
+  version "2.3.1"
+  resolved "https://registry.npmjs.org/@yudiel/react-qr-scanner/-/react-qr-scanner-2.3.1.tgz"
+  integrity sha512-fE7217QvMKT/AxAEeKIheFhkKO13PSGHiqJfg4dLK/SGPpelpXNpZZ0Qeph1Cm08/AqMlGhvzQbCmoPeD/VVIg==
+  dependencies:
+    barcode-detector "3.0.3"
+    webrtc-adapter "9.0.3"
 
 abab@^2.0.3, abab@^2.0.5:
   version "2.0.6"
@@ -2916,6 +2929,13 @@ balanced-match@^1.0.0:
   version "1.0.2"
   resolved "https://registry.npmjs.org/balanced-match/-/balanced-match-1.0.2.tgz"
   integrity sha512-3oSeUO0TMV67hN1AmbXsK4yaqU7tjiHlbxRDZOpH0KW9+CeX4bRAaX0Anxt0tx2MrpRpWwQaPwIlISEJhYU5Pw==
+
+barcode-detector@3.0.3:
+  version "3.0.3"
+  resolved "https://registry.npmjs.org/barcode-detector/-/barcode-detector-3.0.3.tgz"
+  integrity sha512-N07CNbpudOB3oIYm0tvaezCM6zy9HOlYnUCBhX6Q5UGhnqngyBgOf/p/5ZhqHxsf9/QYy5dX95RrblIs0hNaiw==
+  dependencies:
+    zxing-wasm "^2.1.2"
 
 batch@0.6.1:
   version "0.6.1"
@@ -5121,6 +5141,11 @@ html-webpack-plugin@^5.5.0:
     lodash "^4.17.21"
     pretty-error "^4.0.0"
     tapable "^2.0.0"
+
+html5-qrcode@^2.3.8:
+  version "2.3.8"
+  resolved "https://registry.npmjs.org/html5-qrcode/-/html5-qrcode-2.3.8.tgz"
+  integrity sha512-jsr4vafJhwoLVEDW3n1KvPnCCXWaQfRng0/EEYk1vNcQGcG/htAdhJX0be8YyqMoSz7+hZvOZSTAepsabiuhiQ==
 
 htmlparser2@^6.1.0:
   version "6.1.0"
@@ -7843,7 +7868,7 @@ react-dev-utils@^12.0.1:
     strip-ansi "^6.0.1"
     text-table "^0.2.0"
 
-"react-dom@^18.0.0 || ^19.0.0", react-dom@^19.1.1, react-dom@>=18:
+"react-dom@^17 || ^18 || ^19", "react-dom@^18.0.0 || ^19.0.0", react-dom@^19.1.1, react-dom@>=18:
   version "19.1.1"
   resolved "https://registry.npmjs.org/react-dom/-/react-dom-19.1.1.tgz"
   integrity sha512-Dlq/5LAZgF0Gaz6yiqZCf6VCcZs1ghAJyrsu84Q/GT0gV+mCxbfmKNoGRKBYMJ8IEdGPqu49YWXD02GCknEDkw==
@@ -7945,7 +7970,7 @@ react-scripts@^5.0.1:
   optionalDependencies:
     fsevents "^2.3.2"
 
-"react@^18.0.0 || ^19.0.0", react@^19.1.1, "react@>= 16", react@>=18:
+"react@^17 || ^18 || ^19", "react@^18.0.0 || ^19.0.0", react@^19.1.1, "react@>= 16", react@>=18:
   version "19.1.1"
   resolved "https://registry.npmjs.org/react/-/react-19.1.1.tgz"
   integrity sha512-w8nqGImo45dmMIfljjMwOGtbmC/mk4CMYhWIicdSflH91J9TyCyczcPFXJzrZ/ZXcgGRFeP6BU0BEJTw6tZdfQ==
@@ -8305,6 +8330,11 @@ schema-utils@2.7.0:
     "@types/json-schema" "^7.0.4"
     ajv "^6.12.2"
     ajv-keywords "^3.4.1"
+
+sdp@^3.2.0:
+  version "3.2.1"
+  resolved "https://registry.npmjs.org/sdp/-/sdp-3.2.1.tgz"
+  integrity sha512-lwsAIzOPlH8/7IIjjz3K0zYBk7aBVVcvjMwt3M4fLxpjMYyy7i3I97SLHebgn4YBjirkzfp3RvRDWSKsh/+WFw==
 
 select-hose@^2.0.0:
   version "2.0.0"
@@ -8945,6 +8975,11 @@ symbol-tree@^3.2.4:
   resolved "https://registry.npmjs.org/symbol-tree/-/symbol-tree-3.2.4.tgz"
   integrity sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==
 
+tagged-tag@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.npmjs.org/tagged-tag/-/tagged-tag-1.0.0.tgz"
+  integrity sha512-yEFYrVhod+hdNyx7g5Bnkkb0G6si8HJurOoOEgC8B/O0uXLHlaey/65KRv6cuWBNhBgHKAROVpc7QyYqE5gFng==
+
 tailwindcss@^3.0.2:
   version "3.4.17"
   resolved "https://registry.npmjs.org/tailwindcss/-/tailwindcss-3.4.17.tgz"
@@ -9176,6 +9211,13 @@ type-fest@^0.21.3:
   version "0.21.3"
   resolved "https://registry.npmjs.org/type-fest/-/type-fest-0.21.3.tgz"
   integrity sha512-t0rzBq87m3fVcduHDUFhKmyyX+9eo6WQjZvf51Ea/M0Q7+T374Jp1aUiyUl0GKxp8M/OETVHSDvmkyPgvX+X2w==
+
+type-fest@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.npmjs.org/type-fest/-/type-fest-5.0.1.tgz"
+  integrity sha512-9MpwAI52m8H6ssA542UxSLnSiSD2dsC3/L85g6hVubLSXd82wdI80eZwTWhdOfN67NlA+D+oipAs1MlcTcu3KA==
+  dependencies:
+    tagged-tag "^1.0.0"
 
 type-is@~1.6.18:
   version "1.6.18"
@@ -9546,6 +9588,13 @@ webpack-sources@^3.3.3:
     terser-webpack-plugin "^5.3.11"
     watchpack "^2.4.1"
     webpack-sources "^3.3.3"
+
+webrtc-adapter@9.0.3:
+  version "9.0.3"
+  resolved "https://registry.npmjs.org/webrtc-adapter/-/webrtc-adapter-9.0.3.tgz"
+  integrity sha512-5fALBcroIl31OeXAdd1YUntxiZl1eHlZZWzNg3U4Fn+J9/cGL3eT80YlrsWGvj2ojuz1rZr2OXkgCzIxAZ7vRQ==
+  dependencies:
+    sdp "^3.2.0"
 
 websocket-driver@^0.7.4, websocket-driver@>=0.5.1:
   version "0.7.4"
@@ -9941,3 +9990,11 @@ yocto-queue@^0.1.0:
   version "0.1.0"
   resolved "https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
+
+zxing-wasm@^2.1.2:
+  version "2.2.2"
+  resolved "https://registry.npmjs.org/zxing-wasm/-/zxing-wasm-2.2.2.tgz"
+  integrity sha512-Q9/B9whEwAUABvr7ScHl36wVZTBWVHAaumx45uGQLl2GGRp5ZRtDtwbz5scOwl/xzL07fximIqoQqqmzf9eJJA==
+  dependencies:
+    "@types/emscripten" "^1.41.2"
+    type-fest "^5.0.1"
