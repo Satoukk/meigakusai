@@ -335,8 +335,8 @@ export default function App() {
             aspect-ratio: 1 / 1;
             background: rgba(0, 255, 102, 0.05); 
             border: 1px solid var(--neon-cyan);
-            border-radius: 4px; 
-            box-shadow: inset 0 0 8px rgba(8, 247, 254, 0.2), 0 0 3px rgba(8, 247, 254, 0.3);
+            border-radius: 10px; 
+            box-shadow: inset 0 0 15px rgba(8, 247, 254, 0.2), 0 0 3px rgba(8, 247, 254, 0.3);
             transition: all 0.15s ease-out;
             cursor: pointer;
             display: flex;
@@ -438,7 +438,7 @@ export default function App() {
                 width: 85%;
                 max-width: 400px; 
                 gap: 2px;
-                padding: 5px;
+                padding: 8px;
             }
             .board-row { gap: 1px; }
 
@@ -452,7 +452,7 @@ export default function App() {
 
             .square {
                 border-width: 1px;
-                border-radius: 3px;
+                border-radius: 10px;
             }
         }
       `}</style>
