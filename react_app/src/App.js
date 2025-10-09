@@ -435,12 +435,12 @@ export default function App() {
             }
 
             .board-grid {
-                width: 100%;
+                width: 85%;
                 max-width: 400px; 
-                gap: 3px;
-                padding: 3px;
+                gap: 2px;
+                padding: 5px;
             }
-            .board-row { gap: 3px; }
+            .board-row { gap: 1px; }
 
             .status { font-size: 45px; margin-bottom: 15px; }
 
