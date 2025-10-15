@@ -324,9 +324,9 @@ export default function App() {
         }
         
         .board-row {
-            display: grid; 
+            display: flex; 
             grid-template-columns: repeat(5, 1fr); 
-            gap: 6px; 
+            
         }
 
         .square {
@@ -435,10 +435,10 @@ export default function App() {
             }
 
             .board-grid {
-                width: 85%;
+                width: 100%;
                 max-width: 400px; 
                 gap: 2px;
-                padding: 8px;
+                padding: 2px;
             }
             .board-row { gap: 1px; }
 
