@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import QR from "./QR.tsx";
+import Card from "./Card.js";
+import Card2 from "./Card2.js";
 import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
 /* ビンゴを判定*/
 function bingo_judge(squares) {
@@ -31,44 +34,14 @@ function Square({ value, onClick, index }) {
 }
 
 /**
- * ビンゴカード
- */
-function Card({ squares, setSquares }) {
-  function handleClick(i) {
-    if (squares[i] || bingo_judge(squares)) return;
-    const nextSquares = squares.slice();
-    nextSquares[i] = "/NKC2.png"; // 元のスタンプ画像パスを維持
-    setSquares(nextSquares);
-  }
-
-  const winner = bingo_judge(squares);
-  const status = winner ? "ＢＩＮＧＯ！！！" : ""; 
-
-  return (
-    <div className="card-wrapper">
-      <div className="status">{status}</div>
-      <div className="board-grid">
-        {Array.from({ length: 25 }, (_, idx) => (
-          <Square key={idx} index={idx} value={squares[idx]} onClick={() => handleClick(idx)} />
-        ))}
-      </div>
-    </div>
-  );
-}
-
-// ビンゴカード2
-function Card2({ squares, setSquares }) {
-  return <Card squares={squares} setSquares={setSquares} />;
-}
-
-/**
  * ナビゲーション
  */
 const Navigation = ({ squares1, squares2 }) => {
   const location = useLocation();
 
-  const isCard1Active = location.pathname === "/";
+  const isCardActive = location.pathname === "/";
   const isCard2Active = location.pathname === "/card2";
+  const isQRActive = location.pathname === "/QR";
 
   const baseLinkStyle = {
     textDecoration: "none",
@@ -91,10 +64,10 @@ const Navigation = ({ squares1, squares2 }) => {
         to="/"
         style={{
           ...baseLinkStyle,
-          ...(isCard1Active ? activeLinkStyle : {}),
+          ...(isCardActive ? activeLinkStyle : {}),
         }}
       >
-        {isCard1Active ? "▶ " : ""}ビンゴカード1
+        {isCardActive ? "▶ " : ""}ビンゴカード1
       </Link>
 
       <Link
@@ -102,15 +75,20 @@ const Navigation = ({ squares1, squares2 }) => {
         style={{
           ...baseLinkStyle,
           ...(isCard2Active ? activeLinkStyle : {}),
-          marginRight: 0
+          marginRight: 30
         }}
       >
         {isCard2Active ? "▶ " : ""}ビンゴカード2
       </Link>
 
       <Link
-        to="/QR">
-          QRコード読み取り
+        to="/QR"
+           style={{
+          ...baseLinkStyle,
+          ...(isQRActive ? activeLinkStyle : {}),
+        }}
+        >
+          {isQRActive ? "▶ " : ""}QRコード読み取り
       </Link>
     </div>
   );
@@ -141,6 +119,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Card squares={squares1} setSquares={setSquares1} />} />
             <Route path="/card2" element={<Card2 squares={squares2} setSquares={setSquares2} />} />
+            <Route path="/QR" element={<QR />} />
           </Routes>
         </div>
       </div>
