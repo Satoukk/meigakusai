@@ -15,19 +15,46 @@ function Square({ value, onClick, index }) {
 export default function Card2({ squares, setSquares }) {
    const location = useLocation(); // 追加
    const qrData = location.state?.qrData; // 追加
+   
+   // QRコードと特定のマス位置の対応表（Card2専用ID番号システム）
+   const qrToSquareMapping = {
+     // 基本ID番号システム（50000番台）
+     "50001": 0,  "50002": 1,  "50003": 2,  "50004": 3,  "50005": 4,
+     "50006": 5,  "50007": 6,  "50008": 7,  "50009": 8,  "50010": 9,
+     "50011": 10, "50012": 11, "50025": 12, "50014": 13, "50015": 14,
+     "50016": 15, "50017": 16, "50018": 17, "50019": 18, "50020": 19,
+     "50021": 20, "50022": 21, "50023": 22, "50024": 23, "50013": 24,
+     
+     // Card2専用レガシーID
+     "54321": 12,  // 中央
+     "65432": 12,  // 中央
+     "88888": 12,  // 管理者用（中央）
+     
+   };
+   
     useEffect(() => {
      if (qrData) {
-       // 0から24までのランダムなインデックスを生成
-       const randomIndex = Math.floor(Math.random() * 25);
+       console.log("Card2.js - QRデータ受信:", qrData);
+       // QRコードに対応するマス位置を取得
+       const targetSquareIndex = qrToSquareMapping[qrData];
+       console.log("Card2.js - 対応マス位置:", targetSquareIndex);
        
-       // そのマス目がまだ空の場合のみスタンプを配置
-       if (!squares[randomIndex]) {
-         const nextSquares = squares.slice();
-         nextSquares[randomIndex] = "/NKC2.png";
-         setSquares(nextSquares);
+       if (targetSquareIndex !== undefined) {
+         // 対応するマスが既に埋まっていない場合のみスタンプを配置
+         if (!squares[targetSquareIndex]) {
+           console.log("Card2.js - スタンプ配置実行 マス", targetSquareIndex);
+           const nextSquares = squares.slice();
+           nextSquares[targetSquareIndex] = "/NKC2.png";
+           setSquares(nextSquares);
+         } else {
+           console.log("Card2.js - マスは既に埋まっています");
+         }
+       } else {
+         console.log("Card2.js - 対応表にないQRコード:", qrData);
        }
+       // 対応表にない場合は何もしない（スタンプを配置しない）
      }
-   }, [qrData]);
+   }, [qrData, squares, setSquares]);
 
   function handleClick(i) {
     if (squares[i] || calculateWinner(squares)) return;

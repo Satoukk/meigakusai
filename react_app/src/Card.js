@@ -17,17 +17,43 @@ export default function Card({ squares, setSquares }) {
    const location = useLocation(); // 追加
    const qrData = location.state?.qrData; // 追加
    
+   // QRコードと特定のマス位置の対応表（新しいID番号システム）
+   const qrToSquareMapping = {
+     // 基本ID番号システム（10000番台）
+     "10001": 0,  "10002": 1,  "10003": 2,  "10004": 3,  "10005": 4,
+     "10006": 5,  "10007": 6,  "10008": 7,  "10009": 8,  "10010": 9,
+     "10011": 10, "10012": 11, "10025": 12, "10014": 13, "10015": 14,
+     "10016": 15, "10017": 16, "10018": 17, "10019": 18, "10020": 19,
+     "10021": 20, "10022": 21, "10023": 22, "10024": 23, "10013": 24,
+
+     // レガシーID
+     "12345": 12,  // 中央
+     "12346": 12,  // 中央
+     "99999": 12,  // 管理者用（中央）
+   };
+   
+   
    useEffect(() => {
      if (qrData) {
-       // 0から24までのランダムなインデックスを生成
-       const randomIndex = Math.floor(Math.random() * 25);
+       console.log("Card.js - QRデータ受信:", qrData);
+       // QRコードに対応するマス位置を取得
+       const targetSquareIndex = qrToSquareMapping[qrData];
+       console.log("Card.js - 対応マス位置:", targetSquareIndex);
        
-       // そのマス目がまだ空の場合のみスタンプを配置
-       if (!squares[randomIndex]) {
-         const nextSquares = squares.slice();
-         nextSquares[randomIndex] = "/NKC2.png";
-         setSquares(nextSquares);
+       if (targetSquareIndex !== undefined) {
+         // 対応するマスが既に埋まっていない場合のみスタンプを配置
+         if (!squares[targetSquareIndex]) {
+           console.log("Card.js - スタンプ配置実行 マス", targetSquareIndex);
+           const nextSquares = squares.slice();
+           nextSquares[targetSquareIndex] = "/NKC2.png";
+           setSquares(nextSquares);
+         } else {
+           console.log("Card.js - マスは既に埋まっています");
+         }
+       } else {
+         console.log("Card.js - 対応表にないQRコード:", qrData);
        }
+       // 対応表にない場合は何もしない（スタンプを配置しない）
      }
    }, [qrData]);
 

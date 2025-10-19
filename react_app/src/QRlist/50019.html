@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Page - ID: 12345</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background-color: #f0f0f0;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        .id-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 20px 0;
+        }
+        .qr-info {
+            background: #ecf0f1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Test Page</h1>
+        <div class="id-number">ID番号: 12345</div>
+        
+        <div class="qr-info">
+            <p><strong>QRコード情報:</strong></p>
+            <p>このページをQRコードでスキャンすると</p>
+            <p>ID番号 "12345" が読み取られます</p>
+        </div>
+        
+        <p>ビンゴアプリでこのページのQRコードをスキャンしてください</p>
+        
+        <script>
+            // ページ識別用の情報
+            const pageId = "50017";
+            console.log("Page ID:", pageId);
+            
+            // QRコード用のデータ
+            window.qrData = pageId;
+        </script>
+    </div>
+</body>
+</html>
