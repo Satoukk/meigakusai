@@ -44,7 +44,7 @@ function Card({ squares, setSquares }) {
   }
 
   const winner = bingo_judge(squares);
-  const status = winner ? "ビンゴ！！" : "名学祭へ　ようこそ！"; 
+  const status = winner ? "ビンゴ！！" : "名学祭へようこそ！"; 
 
   return (
     <div className="card-wrapper">
@@ -56,7 +56,7 @@ function Card({ squares, setSquares }) {
           width="70" 
           height="70" 
           alt="ポヴィの顔" 
-          className={winner ? 'bingo-win-img' : 'povy'}
+          className={winner ? 'bingo-win-img' : 'povy'} 
         />
       </div>
       
@@ -117,7 +117,7 @@ const Navigation = () => {
 
   const baseLinkStyle = {
     textDecoration: "none",
-    fontFamily: 'Share Tech Mono, monospace', // ターミナル風フォント
+    fontFamily: 'var(--main-font)', 
     fontSize: "clamp(1.2rem, 4vw, 2.5rem)",
     marginRight: "clamp(15px, 5vw, 30px)",
     color: "cyan",
@@ -134,6 +134,7 @@ const Navigation = () => {
   };
 
   return (
+
     <div className="navigation-bar">
       <Link
         to="/"
@@ -160,14 +161,20 @@ const Navigation = () => {
 };
 
 export default function App() {
-  const [squares1, setSquares1] = useState(Array(25).fill(null));
-  const [squares2, setSquares2] = useState(Array(25).fill(null));
-
-  if (!squares1[12]) squares1[12] = "/povy.png";
-  if (!squares2[12]) squares2[12] = "/povy.png";
+  // useStateの初期値として、インデックス12に '/povy.png' を設定
+  const initialSquares = (size) => {
+    const arr = Array(size).fill(null);
+    arr[12] = "/povy.png"; // 真ん中のマスに初期スタンプ
+    return arr;
+  };
+  
+  const [squares1, setSquares1] = useState(initialSquares(25));
+  const [squares2, setSquares2] = useState(initialSquares(25));
 
   return (
     <BrowserRouter>
+      {/* フォントは Orbitron と Rajdhani を維持 */}
+      <link href="https://fonts.googleapis.com/css2?family=Electrolize&family=Rajdhani:wght@400;700&family=Orbitron:wght@600;800&display=swap" rel="stylesheet"></link>
       <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet"></link>
 
       <Navigation />
@@ -183,11 +190,11 @@ export default function App() {
       
       <style jsx="true">{`
         :root {
-            --neon-cyan: #08f7fe;       
+            --neon-cyan: #08f7fe;      
             --neon-green: #00ff66;    
-            --bg-dark: #010408;         
-            --main-font: 'Share Tech Mono', monospace;
-            --title-font: 'Press Start 2P', cursive;
+            --bg-dark: #010408;        
+            --main-font: 'Rajdhani', sans-serif;
+            --title-font: 'Orbitron', sans-serif; 
             --glitch-speed: 0.1s; 
         }
 
@@ -397,21 +404,23 @@ export default function App() {
         .status {
             text-align: center;
             font-family: var(--title-font); 
-            font-size: 45px;
+            font-size: 60px; /* 修正: 文字を大きく */
             font-weight: bold;
             letter-spacing: 2px;
             text-transform: uppercase;
-            margin-bottom: 30px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
-            
+            position: relative; 
         }
         .povy{
           animation: fluffyBounce 2s cubic-bezier(0.4, 0.0, 0.2, 1.0) infinite alternate;
           transform-origin: center bottom;
         }
+
+        
         .status.bingo-win {
             color: var(--neon-green);
             text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
@@ -421,6 +430,39 @@ export default function App() {
             animation: fluffyBounce 2s cubic-bezier(0.4, 0.0, 0.2, 1.0) infinite alternate;
             transform-origin: center bottom;
             filter: drop-shadow(0 0 15px var(--neon-green));
+        }
+
+        /* グリッチ効果（色ズレと揺らぎのみ） */
+        .status.connecting {
+            color: var(--neon-cyan);
+            text-shadow: 0 0 7x var(--neon-cyan), 0 0 10px rgba(8, 247, 254, 0.5); 
+            animation: light-glitch 2s infinite alternate; 
+        }
+        
+        @keyframes light-glitch {
+            0% { 
+                transform: translate(0, 0); 
+                text-shadow: 0 0 3px var(--neon-cyan), 2px 0 0 #00ffff, -2px 0 0 #ff00c1;
+            }
+            15% {
+                transform: translate(0.5px, -0.5px);
+                text-shadow: 0 0 3px var(--neon-cyan), -2px 0 0 #00ffff, 2px 0 0 #ff00c1;
+            }
+            30% {
+                transform: translate(-0.5px, 0.5px);
+                text-shadow: 0 0 3px var(--neon-cyan), 4px 0 0 #ff00c1, -1px 0 0 #00ffff;
+            }
+            45% {
+                transform: translate(0.2px, 0.2px);
+                text-shadow: 0 0 3px var(--neon-cyan), -1px 0 0 #00ffff, 0.5px 0 0 #ff00c1;
+            }
+            60% {
+                transform: translate(-0.2px, -0.2px);
+            }
+            100% { 
+                transform: translate(0, 0); 
+                text-shadow: 0 0 3px var(--neon-cyan), 1px 0 0 #00ffff, -1px 0 0 #ff00c1;
+            }
         }
 
         /*スマホ対応*/
@@ -442,7 +484,7 @@ export default function App() {
             }
             .board-row { gap: 1px; }
 
-            .status { font-size: 45px; margin-bottom: 15px; }
+            .status { font-size: 40px; margin-bottom: 15px; } /* 修正: スマホでも文字を大きく */
 
             .card-wrapper { 
                 transform: none;
