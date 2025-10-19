@@ -423,7 +423,7 @@ export default function App() {
         
         .status.bingo-win {
             color: var(--neon-green);
-            text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green);
+            animation: light-glitch 1s infinite alternate;
         }
         
         .bingo-win-img {
@@ -436,13 +436,13 @@ export default function App() {
         .status.connecting {
             color: var(--neon-cyan);
             text-shadow: 0 0 7x var(--neon-cyan), 0 0 10px rgba(8, 247, 254, 0.5); 
-            animation: light-glitch 2s infinite alternate; 
+            animation: light-glitch 2.5s infinite alternate; 
         }
         
         @keyframes light-glitch {
             0% { 
                 transform: translate(0, 0); 
-                text-shadow: 0 0 3px var(--neon-cyan), 2px 0 0 #00ffff, -2px 0 0 #ff00c1;
+                text-shadow: 0 0 3px #ff00c1, 2px 0 0 #00ffff, -2px 0 0 #ff00c1;
             }
             15% {
                 transform: translate(0.5px, -0.5px);
@@ -454,14 +454,14 @@ export default function App() {
             }
             45% {
                 transform: translate(0.2px, 0.2px);
-                text-shadow: 0 0 3px var(--neon-cyan), -1px 0 0 #00ffff, 0.5px 0 0 #ff00c1;
+                text-shadow: 0 0 3px #ff00c1, -1px 0 0 #00ffff, 0.5px 0 0 #ff00c1;
             }
             60% {
                 transform: translate(-0.2px, -0.2px);
             }
             100% { 
                 transform: translate(0, 0); 
-                text-shadow: 0 0 3px var(--neon-cyan), 1px 0 0 #00ffff, -1px 0 0 #ff00c1;
+                text-shadow: 0 0 3px #ff00c1, 1px 0 0 #00ffff, -1px 0 0 #ff00c1;
             }
         }
 
