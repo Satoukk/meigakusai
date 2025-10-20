@@ -13,7 +13,7 @@ function Square({ value, onClick, index }) {
   );
 }
 
-export default function Card({ squares, setSquares }) {
+export default function Card({ squares, setSquares, bingoManager, cardType }) {
    const location = useLocation(); // 追加
    const qrData = location.state?.qrData; // 追加
    
@@ -47,6 +47,11 @@ export default function Card({ squares, setSquares }) {
            const nextSquares = squares.slice();
            nextSquares[targetSquareIndex] = "/NKC2.png";
            setSquares(nextSquares);
+           
+           // LocalBingoManagerでデータを保存
+           if (bingoManager) {
+             bingoManager.saveBingoCard(cardType, nextSquares);
+           }
          } else {
            console.log("Card.js - マスは既に埋まっています");
          }
@@ -62,11 +67,17 @@ export default function Card({ squares, setSquares }) {
     const nextSquares = squares.slice();
     nextSquares[i] = "/NKC2.png";
     setSquares(nextSquares);
+    
+    // LocalBingoManagerでデータを保存
+    if (bingoManager) {
+      bingoManager.saveBingoCard(cardType, nextSquares);
+    }
   }
 
   const winner = calculateWinner(squares);
   const bingoCount = countBingoLines(squares);
-  const stampCount = squares.filter(square => square !== null).length;
+  // 実際に画像が設定されているマス（画像パスが文字列のマス）のみをカウント
+  const stampCount = squares.filter(square => typeof square === 'string' && square.length > 0).length;
   const status = winner ? "ＢＩＮＧＯ！！！" : "";
 
   return (

@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import QR from "./QR.tsx";
 import Card from "./Card.js";
 import Card2 from "./Card2.js";
+import { LocalBingoManager } from "./LocalBingoManager.js";
+import BingoStats from "./BingoStats.js";
 import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
 /* ビンゴを判定*/
 function bingo_judge(squares) {
@@ -102,10 +104,30 @@ const Navigation = ({ squares1, squares2 }) => {
 export default function App() {
   const [squares1, setSquares1] = useState(Array(25).fill(null));
   const [squares2, setSquares2] = useState(Array(25).fill(null));
+  const [bingoManager, setBingoManager] = useState(null);
 
   // センターフリースペースの設定
   if (!squares1[12]) squares1[12] = "/NKC2.png";
   if (!squares2[12]) squares2[12] = "/NKC2.png";
+
+  // LocalBingoManagerの初期化とデータ復元
+  useEffect(() => {
+    const manager = new LocalBingoManager();
+    setBingoManager(manager);
+    
+    // 保存されたデータを復元
+    const card1Data = manager.getCardData('card1');
+    const card2Data = manager.getCardData('card2');
+    
+    if (card1Data?.squares) {
+      setSquares1(card1Data.squares);
+    }
+    if (card2Data?.squares) {
+      setSquares2(card2Data.squares);
+    }
+    
+    console.log('ローカルデータを復元しました');
+  }, []);
 
   return (
     <BrowserRouter>
@@ -117,12 +139,15 @@ export default function App() {
       <div className="main-3d-container"> 
         <div className="main-content">
           <Routes>
-            <Route path="/" element={<Card squares={squares1} setSquares={setSquares1} />} />
-            <Route path="/card2" element={<Card2 squares={squares2} setSquares={setSquares2} />} />
+            <Route path="/" element={<Card squares={squares1} setSquares={setSquares1} bingoManager={bingoManager} cardType="card1" />} />
+            <Route path="/card2" element={<Card2 squares={squares2} setSquares={setSquares2} bingoManager={bingoManager} cardType="card2" />} />
             <Route path="/QR" element={<QR />} />
           </Routes>
         </div>
       </div>
+      
+      {/* 統計情報コンポーネント */}
+      <BingoStats bingoManager={bingoManager} />
       
       <style jsx="true">{`
         :root {
