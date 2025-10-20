@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
+
 /* ビンゴを判定*/
 function bingo_judge(squares) {
   const lines = [
@@ -10,47 +11,109 @@ function bingo_judge(squares) {
   ];
   for (let line of lines) {
     const [a, b, c, d, e] = line;
-    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c] && squares[a] === squares[d] && squares[a] === squares[e]) {
-      return squares[a];
+    if (squares[a] === '/povy.png' && squares[a] === squares[b] && squares[a] === squares[c] && squares[a] === squares[d] && squares[a] === squares[e]) {
+      return line;
     }
   }
-  return null;
+  return null; // ビンゴなし
 }
 
 
-function Square({ value, Stamp, index }) { // StampをhandleClickの代わりに受け取る
-  //真ん中にスタンプを押す
+function Square({ value, Stamp, index, isBingoSquare, bingoLineIndex, isWinner }) { 
   const isFreeSpace = index === 12;
   const isClicked = !!value; 
   
+  const bingoGlowClass = isWinner && isBingoSquare ? 'bingo-line-glow' : '';
+
   return (
-    <button className={`square ${isClicked ? 'clicked' : ''} ${isFreeSpace ? 'free-space' : ''}`} onClick={Stamp}>
+    <button 
+      className={`square ${isClicked ? 'clicked' : ''} ${isFreeSpace ? 'free-space' : ''} ${bingoGlowClass}`} 
+      onClick={Stamp}
+      style={{ '--bingo-index': bingoLineIndex }} // スロットアニメーション遅延用
+    >
       {value ? <img src={value} alt="stamp" style={{ width: "70%", height: "70%" }} /> : null}
     </button>
   );
 }
 
-/**
- * ビンゴカード
- */
+/*ポヴィのカットイン*/
+function PovyCutIn({ isVisible }) {
+  const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    if (isVisible) {
+      setShow(true);
+      const timer = setTimeout(() => {
+        setShow(false);
+      }, 1500); 
+      
+      return () => clearTimeout(timer);
+    }
+  }, [isVisible]);
+
+  if (!show) return null;
+
+  return (
+    <div className="povy-cutin-container">
+      <div className="povy-cutin-box">
+        <img 
+          src='/povy_smile.png' 
+          alt="Povy Cut In" 
+          className="povy-cutin-img"
+        />
+        <div className="cutin-text">
+          <h1>BINGO!!!</h1>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/*ビンゴカード*/
 function Card({ squares, setSquares }) {
+  const bingoLine = bingo_judge(squares); // ライン配列 or null
+  const winner = !!bingoLine;
+
+  const [bingoTriggered, setBingoTriggered] = useState(false);
+  
+  useEffect(() => {
+    if (winner && !bingoTriggered) {
+      setBingoTriggered(true);
+      const resetTimer = setTimeout(() => setBingoTriggered(false), 2000); 
+      return () => clearTimeout(resetTimer);
+    }
+    if (!winner && bingoTriggered) {
+        setBingoTriggered(false);
+    }
+  }, [winner, bingoTriggered]);
+
+  useEffect(() => {
+    if (winner && bingoLine) {
+      const isFreeSpaceInLine = bingoLine.includes(12);
+      if (isFreeSpaceInLine && !squares[12]) {
+        const nextSquares = squares.slice();
+        nextSquares[12] = "/povy.png"; 
+        setSquares(nextSquares);
+      }
+    }
+  }, [squares, setSquares, winner, bingoLine]);
+  
   function handleClick(i) {
-    // 既にスタンプがあるか、またはビンゴが成立していたら何もしない
-    if (squares[i] || bingo_judge(squares)) return;
+    if (squares[i] || winner) return;
+    if (i === 12) return; 
 
     const nextSquares = squares.slice();
     nextSquares[i] = "/povy.png"; 
     setSquares(nextSquares);
   }
 
-  const winner = bingo_judge(squares);
-  const status = winner ? "ビンゴ！！" : "名学祭へようこそ！"; 
+  // ステータス表示
+  const status = winner ? "BINGO!! " : "名学祭へようこそ！"; 
 
   return (
     <div className="card-wrapper">
       <div className={`status ${winner ? 'bingo-win' : 'connecting'}`}>
         {status}
-        {/* ビンゴ成立時に bingo-win-img クラスを適用してアニメーションさせる */}
         <img 
           src='/povy_smile.png' 
           width="70" 
@@ -60,43 +123,33 @@ function Card({ squares, setSquares }) {
         />
       </div>
       
+      {winner && <div className="bingo-overlay"></div>}
+      
       <div className="board-grid">
-        <div className="board-row">
-          <Square index={0} value={squares[0]} Stamp={()=>handleClick(0)}/>
-          <Square index={1} value={squares[1]} Stamp={()=>handleClick(1)}/>
-          <Square index={2} value={squares[2]} Stamp={()=>handleClick(2)}/>
-          <Square index={3} value={squares[3]} Stamp={()=>handleClick(3)}/>
-          <Square index={4} value={squares[4]} Stamp={()=>handleClick(4)}/>
-        </div>
-        <div className="board-row">
-          <Square index={5} value={squares[5]} Stamp={()=>handleClick(5)}/>
-          <Square index={6} value={squares[6]} Stamp={()=>handleClick(6)}/>
-          <Square index={7} value={squares[7]} Stamp={()=>handleClick(7)}/>
-          <Square index={8} value={squares[8]} Stamp={()=>handleClick(8)}/>
-          <Square index={9} value={squares[9]} Stamp={()=>handleClick(9)}/>
-        </div>
-        <div className="board-row">
-          <Square index={10} value={squares[10]} Stamp={()=>handleClick(10)}/>
-          <Square index={11} value={squares[11]} Stamp={()=>handleClick(11)}/>
-          <Square index={12} value={squares[12]} Stamp={()=>handleClick(12)}/> {/* Free Space */}
-          <Square index={13} value={squares[13]} Stamp={()=>handleClick(13)}/>
-          <Square index={14} value={squares[14]} Stamp={()=>handleClick(14)}/>
-        </div>
-        <div className="board-row">
-          <Square index={15} value={squares[15]} Stamp={()=>handleClick(15)}/>
-          <Square index={16} value={squares[16]} Stamp={()=>handleClick(16)}/>
-          <Square index={17} value={squares[17]} Stamp={()=>handleClick(17)}/>
-          <Square index={18} value={squares[18]} Stamp={()=>handleClick(18)}/>
-          <Square index={19} value={squares[19]} Stamp={()=>handleClick(19)}/>
-        </div>
-        <div className="board-row">
-          <Square index={20} value={squares[20]} Stamp={()=>handleClick(20)}/>
-          <Square index={21} value={squares[21]} Stamp={()=>handleClick(21)}/>
-          <Square index={22} value={squares[22]} Stamp={()=>handleClick(22)}/>
-          <Square index={23} value={squares[23]} Stamp={()=>handleClick(23)}/>
-          <Square index={24} value={squares[24]} Stamp={()=>handleClick(24)}/>
-        </div>
+        {Array.from({ length: 5 }).map((_, rowIndex) => (
+          <div className="board-row" key={rowIndex}>
+            {Array.from({ length: 5 }).map((_, colIndex) => {
+              const i = rowIndex * 5 + colIndex;
+              const isBingoSquare = winner && bingoLine && bingoLine.includes(i);
+              const bingoIndex = bingoLine ? bingoLine.indexOf(i) : -1;
+
+              return (
+                <Square 
+                  key={i}
+                  index={i} 
+                  value={squares[i]} 
+                  Stamp={() => handleClick(i)}
+                  isBingoSquare={isBingoSquare}
+                  bingoLineIndex={bingoIndex}
+                  isWinner={winner}
+                />
+              );
+            })}
+          </div>
+        ))}
       </div>
+      
+      <PovyCutIn isVisible={winner && bingoTriggered} />
     </div>
   );
 }
@@ -106,24 +159,23 @@ function Card2({ squares, setSquares }) {
   return <Card squares={squares} setSquares={setSquares} />;
 }
 
-/**
- * ナビゲーション
- */
+/*ナビゲーション*/
 const Navigation = () => {
   const location = useLocation();
 
   const isCard1Active = location.pathname === "/";
   const isCard2Active = location.pathname === "/card2";
 
+  // ナビゲーションリンクのスタイル
   const baseLinkStyle = {
     textDecoration: "none",
     fontFamily: 'var(--main-font)', 
     fontSize: "clamp(1.2rem, 4vw, 2.5rem)",
     marginRight: "clamp(15px, 5vw, 30px)",
-    color: "cyan",
-    textShadow: "0 0 5px cyan, 0 0 15px cyan",
+    color: "var(--color-primary)", 
+    textShadow: "0 0 5px var(--color-primary), 0 0 15px var(--color-primary)",
     transition: 'all 0.3s ease',
-    letterSpacing: '1px',
+    letterSpacing: '1.5px', 
     fontWeight: 'bold',
   };
 
@@ -134,7 +186,6 @@ const Navigation = () => {
   };
 
   return (
-
     <div className="navigation-bar">
       <Link
         to="/"
@@ -161,10 +212,10 @@ const Navigation = () => {
 };
 
 export default function App() {
-  // useStateの初期値として、インデックス12に '/povy.png' を設定
+  
   const initialSquares = (size) => {
     const arr = Array(size).fill(null);
-    arr[12] = "/povy.png"; // 真ん中のマスに初期スタンプ
+    arr[12] = "/povy.png"; 
     return arr;
   };
   
@@ -173,7 +224,6 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      {/* フォントは Orbitron と Rajdhani を維持 */}
       <link href="https://fonts.googleapis.com/css2?family=Electrolize&family=Rajdhani:wght@400;700&family=Orbitron:wght@600;800&display=swap" rel="stylesheet"></link>
       <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Share+Tech+Mono&display=swap" rel="stylesheet"></link>
 
@@ -192,10 +242,14 @@ export default function App() {
         :root {
             --neon-cyan: #08f7fe;      
             --neon-green: #00ff66;    
+            --neon-magenta: #ff00c1; 
+            --color-primary: #08f7fe; /* シアン */
+            --color-secondary: #00ff66; /* グリーン */
+            --color-accent: #ff00c1; /* マゼンタ */
             --bg-dark: #010408;        
             --main-font: 'Rajdhani', sans-serif;
             --title-font: 'Orbitron', sans-serif; 
-            --glitch-speed: 0.1s; 
+            --glitch-speed: 0.05s;
         }
 
         body {
@@ -207,9 +261,9 @@ export default function App() {
             margin: 0;
             padding-top: 100px; 
             background: linear-gradient(145deg, #020205 0%, #000000 100%);
-            overflow-x: hidden; /*横スクロールを完全に禁止 */
+            overflow-x: hidden;
             font-family: var(--main-font);
-            color: var(--neon-cyan);
+            color: var(--color-primary); 
             perspective: 1000px;
             position: relative;
         }
@@ -220,11 +274,9 @@ export default function App() {
             top: 0; left: 0; right: 0; bottom: 0;
             z-index: -1;
             opacity: 0.15;
-            
             background: 
-                linear-gradient(to right, var(--neon-cyan) 1px, transparent 1px),
-                linear-gradient(to bottom, var(--neon-cyan) 1px, transparent 1px),
-                
+                linear-gradient(to right, rgba(8, 247, 254, 0.2) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(8, 247, 254, 0.2) 1px, transparent 1px),
                 repeating-linear-gradient(
                     0deg, 
                     rgba(0,0,0,0.2) 0, 
@@ -232,9 +284,7 @@ export default function App() {
                     transparent 2px, 
                     transparent 3px
                 );
-
             background-size: 50px 50px, 50px 50px, 100% 5px;
-            
             animation: 
                 gridScroll 30s linear infinite, 
                 noiseFlicker 0.1s step-end infinite;
@@ -273,7 +323,6 @@ export default function App() {
             100% { opacity: 0.2; }
         }
 
-
         @keyframes fluffyBounce {
             0%, 100% {
                 transform: translateY(0) rotate(0deg); 
@@ -292,12 +341,22 @@ export default function App() {
         }
         @keyframes terminalGlow {
             0% { box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5); }
-            100% { box-shadow: 0 50px 100px rgba(0, 0, 0, 0.6), 0 0 10px rgba(8, 247, 254, 0.1); }
+            100% { box-shadow: 0 50px 100px rgba(0, 0, 0, 0.6), 0 0 10px var(--color-primary); } 
         }
 
         .navigation-bar {
-          border-bottom: 5px solid var(--neon-cyan); 
+          z-index: 9999; 
+          background: rgba(0, 0, 0, 0.9);
+          position: fixed; 
+          top: 0;
+          left: 0;
+          right: 0;
+          
+          border-bottom: 5px solid var(--color-primary); 
           box-shadow: 0 0 30px rgba(8, 247, 254, 0.6);
+          padding: 10px 20px;
+          display: flex;
+          justify-content: center;
         }
         
         .card-wrapper {
@@ -305,7 +364,7 @@ export default function App() {
             background: rgba(10, 20, 30, 0.85); 
             border-radius: 8px; 
             backdrop-filter: blur(10px);
-            border: 2px solid var(--neon-green); 
+            border: 2px solid var(--color-secondary); 
             box-shadow: 
                 0 0 15px rgba(0, 255, 102, 0.6), 
                 inset 0 0 20px rgba(0, 255, 102, 0.3); 
@@ -315,6 +374,19 @@ export default function App() {
             box-sizing: border-box;
             transform: rotateX(2deg) rotateY(-2deg); 
             transition: all 0.5s ease-out;
+            position: relative; 
+            animation: cardGlitch 4s infinite linear;
+        }
+
+        @keyframes cardGlitch {
+            0%, 100% { transform: translate(0, 0) rotateX(2deg) rotateY(-2deg); }
+            1% { transform: translate(-1px, 0.5px) rotateX(2.1deg) rotateY(-1.9deg); }
+            3% { transform: translate(1px, -0.5px) rotateX(1.9deg) rotateY(-2.1deg); }
+            5% { transform: translate(-0.5px, 1px) rotateX(2.05deg) rotateY(-2.05deg); }
+            7% { transform: translate(0.5px, -1px) rotateX(1.95deg) rotateY(-1.95deg); }
+            8% { transform: translate(0, 0) rotateX(2deg) rotateY(-2deg); }
+            15%, 25%, 35%, 45%, 55%, 65%, 75%, 85%, 95% { opacity: 1; }
+            15.1%, 25.1%, 35.1%, 45.1%, 55.1%, 65.1%, 75.1%, 85.1%, 95.1% { opacity: 0.98; }
         }
         
         .board-grid {
@@ -324,7 +396,7 @@ export default function App() {
             width: 550px; 
             max-width: 100%; 
             margin: 0 auto;
-            border: 1px solid rgba(0, 255, 102, 0.5);
+            border: 1px solid var(--color-secondary); 
             box-shadow: inset 0 0 10px rgba(0, 255, 102, 0.3);
             padding: 5px;
             box-sizing: border-box;
@@ -333,7 +405,6 @@ export default function App() {
         .board-row {
             display: flex; 
             grid-template-columns: repeat(5, 1fr); 
-            
         }
 
         .square {
@@ -341,7 +412,7 @@ export default function App() {
             height: auto;
             aspect-ratio: 1 / 1;
             background: rgba(0, 255, 102, 0.05); 
-            border: 1px solid var(--neon-cyan);
+            border: 1px solid var(--color-primary); 
             border-radius: 10px; 
             box-shadow: inset 0 0 15px rgba(8, 247, 254, 0.2), 0 0 3px rgba(8, 247, 254, 0.3);
             transition: all 0.15s ease-out;
@@ -353,22 +424,21 @@ export default function App() {
 
         .square:hover:not(.clicked) {
             transform: scale(1.02);
-            border-color: var(--neon-green);
+            border-color: var(--color-secondary); 
             box-shadow: 
                 inset 0 0 15px rgba(0, 255, 102, 0.5), 
-                0 0 10px var(--neon-green), 
+                0 0 10px var(--color-secondary), 
                 0 0 20px rgba(0, 255, 102, 0.4),
-                -1px 0 0 var(--neon-magenta), 
-                1px 0 0 var(--neon-cyan); 
+                -1px 0 0 var(--color-accent), 
+                1px 0 0 var(--color-primary); 
         }
 
-        /* スタンプありの状態 */
         .square.clicked {
             background: rgba(0, 255, 102, 0.3); 
             box-shadow: 
                 inset 0 0 25px rgba(0, 255, 102, 0.8), 
-                0 0 10px var(--neon-green); 
-            border-color: var(--neon-green);
+                0 0 10px var(--color-secondary); 
+            border-color: var(--color-secondary); 
             cursor: default;
             animation: glitchClick 0.4s ease-in-out;
         }
@@ -380,7 +450,6 @@ export default function App() {
             100% { transform: translate(0); }
         }
         
-        /* センターフリースペースを強調 */
         .square.free-space {
             background: rgba(255, 255, 255, 0.3); 
             border: 2px solid white; 
@@ -396,15 +465,18 @@ export default function App() {
         }
 
         .square img {
-            filter: drop-shadow(0 0 8px var(--neon-green)) drop-shadow(0 0 15px rgba(0, 255, 102, 0.5));
+            filter: drop-shadow(0 0 8px var(--color-secondary)) drop-shadow(0 0 15px rgba(0, 255, 102, 0.5)); 
             transition: transform 0.3s ease, filter 0.3s ease;
         }
+        /* ------------------ END BINGO BOARD STYLE ------------------ */
 
-        /*ステータス*/
+        
+        /* ------------------ BINGO ANIMATIONS (STATUS/SQUARES) ------------------ */
+
         .status {
             text-align: center;
             font-family: var(--title-font); 
-            font-size: 60px; /* 修正: 文字を大きく */
+            font-size: 60px;
             font-weight: bold;
             letter-spacing: 2px;
             text-transform: uppercase;
@@ -415,57 +487,202 @@ export default function App() {
             gap: 10px;
             position: relative; 
         }
+        
         .povy{
           animation: fluffyBounce 2s cubic-bezier(0.4, 0.0, 0.2, 1.0) infinite alternate;
           transform-origin: center bottom;
         }
-
-        
-        .status.bingo-win {
-            color: var(--neon-green);
-            animation: light-glitch 1s infinite alternate;
-        }
-        
         .bingo-win-img {
             animation: fluffyBounce 2s cubic-bezier(0.4, 0.0, 0.2, 1.0) infinite alternate;
             transform-origin: center bottom;
             filter: drop-shadow(0 0 15px var(--neon-green));
         }
 
-        /* グリッチ効果（色ズレと揺らぎのみ） */
-        .status.connecting {
-            color: var(--neon-cyan);
-            text-shadow: 0 0 7x var(--neon-cyan), 0 0 10px rgba(8, 247, 254, 0.5); 
-            animation: light-glitch 2.5s infinite alternate; 
+        .status.bingo-win {
+            color: var(--neon-green);
+            text-shadow: 
+                0 0 10px var(--neon-green), 
+                0 0 20px var(--neon-green),
+                0 0 40px rgba(0, 255, 102, 0.8); 
+            animation: neon-pulse 0.5s infinite alternate; 
         }
         
-        @keyframes light-glitch {
+        @keyframes neon-pulse {
+            0% { transform: scale(1); text-shadow: 0 0 10px var(--neon-green), 0 0 20px var(--neon-green); }
+            100% { transform: scale(1.05); text-shadow: 0 0 20px var(--neon-green), 0 0 50px rgba(0, 255, 102, 0.8); }
+        }
+
+        .status.connecting {
+            color: var(--color-primary); 
+            text-shadow: 0 0 5px var(--color-primary); 
+            animation: textGlitchEffect 1.5s infinite alternate; 
+        }
+        
+        @keyframes textGlitchEffect {
             0% { 
                 transform: translate(0, 0); 
-                text-shadow: 0 0 3px #ff00c1, 2px 0 0 #00ffff, -2px 0 0 #ff00c1;
+                text-shadow: 0 0 5px var(--color-primary);
             }
-            15% {
-                transform: translate(0.5px, -0.5px);
-                text-shadow: 0 0 3px var(--neon-cyan), -2px 0 0 #00ffff, 2px 0 0 #ff00c1;
+            20% { 
+                transform: translate(-1px, 0.5px); 
+                text-shadow: 0 0 5px var(--color-primary), -3px 0 0 var(--color-accent);
             }
-            30% {
-                transform: translate(-0.5px, 0.5px);
-                text-shadow: 0 0 3px var(--neon-cyan), 4px 0 0 #ff00c1, -1px 0 0 #00ffff;
+            40% { 
+                transform: translate(1px, -0.5px); 
+                text-shadow: 0 0 5px var(--color-primary), 3px 0 0 var(--color-accent);
             }
-            45% {
-                transform: translate(0.2px, 0.2px);
-                text-shadow: 0 0 3px #ff00c1, -1px 0 0 #00ffff, 0.5px 0 0 #ff00c1;
+            60% { 
+                transform: translate(-0.5px, 1px); 
+                text-shadow: 0 0 5px var(--color-primary), -3px 0 0 var(--color-accent);
             }
-            60% {
-                transform: translate(-0.2px, -0.2px);
+            80% { 
+                transform: translate(0.5px, -1px); 
+                text-shadow: 0 0 5px var(--color-primary), 2px 0 0 var(--color-accent); 
             }
             100% { 
                 transform: translate(0, 0); 
-                text-shadow: 0 0 3px #ff00c1, 1px 0 0 #00ffff, -1px 0 0 #ff00c1;
+                text-shadow: 0 0 5px var(--color-primary);
             }
         }
 
-        /*スマホ対応*/
+        .square.bingo-line-glow {
+            background: rgba(0, 255, 102, 0.5); 
+            border: 3px solid var(--neon-green);
+            box-shadow: 
+                inset 0 0 30px rgba(0, 255, 102, 1), 
+                0 0 20px var(--neon-green);
+            
+            animation: 
+                bingo-sequence 0.2s ease-in-out forwards, 
+                slot-flicker 1s infinite; 
+            
+            animation-delay: calc(0.1s * var(--bingo-index)); 
+        }
+
+        @keyframes slot-flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; } 
+        }
+        
+        @keyframes bingo-sequence {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); box-shadow: inset 0 0 60px rgba(255, 255, 255, 1), 0 0 40px var(--neon-green); } 
+            100% { transform: scale(1); }
+        }
+
+        .bingo-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--color-secondary); 
+            z-index: 99; 
+            opacity: 0;
+            animation: bingoFlash 0.15s ease-out; 
+            pointer-events: none;
+        }
+
+        @keyframes bingoFlash {
+            0% { opacity: 0.8; }
+            100% { opacity: 0; }
+        }
+        
+        .povy-cutin-container {
+            position: fixed;
+            top: 50%; /* 中央揃えの基準 */
+            left: 50%; /* 中央揃えの基準 */
+            transform: translate(-50%, -50%); /* 中央揃えを完了 */
+            
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 101; 
+            pointer-events: none;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.8); /* 背景をより暗く */
+            backdrop-filter: blur(8px); /* ぼかしを強める */
+            animation: cutinBackgroundFade 0.2s forwards;
+        }
+        
+        .povy-cutin-box {
+            position: relative;
+            animation: cutinBoxAppear 1.5s cubic-bezier(0.25, 1.5, 0.5, 1) forwards;
+            padding: 40px; /* パディングを増やして迫力を出す */
+            background: radial-gradient(circle at center, rgba(255, 0, 193, 0.2), rgba(0, 0, 0, 0.9)); /* マゼンタを基調としたグラデーション */
+            border: 4px solid white; 
+            border-radius: 4px;
+            box-shadow: 
+                0 0 40px var(--color-primary), 
+                0 0 80px cyan,
+                inset 0 0 30px var(--color-primary); 
+            transform: scale(0);
+        }
+
+        .povy-cutin-img {
+            width: clamp(150px, 40vw, 300px);
+            height: auto;
+            filter: drop-shadow(0 0 15px cyan)) drop-shadow(0 0 30px cyan); 
+            animation: cutinImageGlow 0.2s ease-in-out;
+        }
+
+        .cutin-text {
+            font-family: 'Press Start 2P', cursive;
+            color: white;
+            font-size: clamp(1.5rem, 4vw, 3rem); 
+            text-align: center;
+            margin-top: 25px;
+            text-shadow: 
+                0 0 10px white, 
+                0 0 20px var(--color-accent); 
+            letter-spacing: 3px;
+            animation: textGlitch 0.3s infinite alternate; 
+        }
+        
+        .povy-cutin-img {
+            width: clamp(150px, 40vw, 300px);
+            height: auto;
+            filter: drop-shadow(0 0 10px var(--color-secondary)) drop-shadow(0 0 20px var(--color-primary)); 
+            animation: cutinImageGlow 0.3s ease-in-out;
+        }
+
+        .cutin-text {
+            font-family: 'Press Start 2P', cursive;
+            color: white;
+            font-size: clamp(1rem, 3vw, 2rem);
+            text-align: center;
+            margin-top: 15px;
+            text-shadow: 
+                0 0 5px white, 
+                0 0 10px var(--color-secondary); 
+            letter-spacing: 2px;
+            animation: textGlitch 0.5s infinite alternate;
+        }
+        
+        @keyframes cutinBackgroundFade {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes cutinBoxAppear {
+            0% { transform: scale(0) rotate(0deg); opacity: 0; }
+            40% { transform: scale(1.1) rotate(2deg); opacity: 1; }
+            60% { transform: scale(1) rotate(-1deg); }
+            100% { transform: scale(1) rotate(0deg); opacity: 1; }
+        }
+        
+        @keyframes cutinImageGlow {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        
+        @keyframes textGlitch {
+            0% { transform: translate(0); text-shadow: 0 0 5px white; }
+            50% { transform: translate(1px, -1px); text-shadow: 0 0 5px var(--color-secondary), 2px 2px 0 var(--color-accent); } 
+            100% { transform: translate(-1px, 1px); text-shadow: 0 0 5px white, -2px -2px 0 var(--color-primary); } 
+        }
         
         @media (max-width: 600px) {
             
@@ -476,6 +693,10 @@ export default function App() {
                 transform: none;
             }
 
+            .navigation-bar {
+                padding: 5px 10px;
+            }
+
             .board-grid {
                 width: 100%;
                 max-width: 400px; 
@@ -484,7 +705,7 @@ export default function App() {
             }
             .board-row { gap: 1px; }
 
-            .status { font-size: 40px; margin-bottom: 15px; } /* 修正: スマホでも文字を大きく */
+            .status { font-size: 30px; margin-bottom: 10px; } 
 
             .card-wrapper { 
                 transform: none;
@@ -494,7 +715,7 @@ export default function App() {
 
             .square {
                 border-width: 1px;
-                border-radius: 10px;
+                border-radius: 5px; 
             }
         }
       `}</style>
