@@ -105,6 +105,7 @@ export default function App() {
   const [squares1, setSquares1] = useState(Array(25).fill(null));
   const [squares2, setSquares2] = useState(Array(25).fill(null));
   const [bingoManager, setBingoManager] = useState(null);
+  const [showRules, setShowRules] = useState(false);
 
   // センターフリースペースの設定
   if (!squares1[12]) squares1[12] = "/NKC2.png";
@@ -134,6 +135,97 @@ export default function App() {
       {/*フォントを読み込み*/}
       <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Train+One&family=Rampart+One&display=swap" rel="stylesheet"></link>
 
+      {/* ルール説明モーダル */}
+      {showRules && (
+        <div style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background: "rgba(0, 0, 0, 0.8)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          zIndex: 1002
+        }}>
+          <div style={{
+            background: "rgba(1, 4, 8, 0.95)",
+            border: "3px solid #08f7fe",
+            borderRadius: "15px",
+            padding: "30px",
+            maxWidth: "500px",
+            width: "90%",
+            maxHeight: "80vh",
+            overflow: "auto",
+            color: "#08f7fe",
+            fontFamily: "DotGothic16, monospace",
+            boxShadow: "0 0 30px rgba(8, 247, 254, 0.6)"
+          }}>
+            <h2 style={{ 
+              textAlign: "center", 
+              marginBottom: "20px",
+              color: "#08f7fe",
+              textShadow: "0 0 10px rgba(8, 247, 254, 0.8)"
+            }}>
+              🎯 ビンゴゲームのルール
+            </h2>
+            
+            <div style={{ textAlign: "left", lineHeight: "1.6", fontSize: "14px" }}>
+              <h3 style={{ color: "#00f5d4", marginBottom: "10px" }}>📱 QRコードの読み取り方法</h3>
+              <ul style={{ marginBottom: "20px", paddingLeft: "20px" }}>
+                <li>「QRコード読み取り」ページでQRコードをスキャン</li>
+                <li>正常に読み取れると自動的にビンゴカードに移動</li>
+                <li>対応するマスにスタンプが押されます</li>
+              </ul>
+
+              <h3 style={{ color: "#00f5d4", marginBottom: "10px" }}>🎮 ゲームの進め方</h3>
+              <ul style={{ marginBottom: "20px", paddingLeft: "20px" }}>
+                <li>会場内のQRコードを見つけて読み取ろう</li>
+                <li>ビンゴカード1とカード2の両方が利用できます</li>
+                <li>横・縦・斜めのいずれかが揃うとビンゴ完成！</li>
+                <li>複数のラインでビンゴを目指そう</li>
+              </ul>
+
+              <h3 style={{ color: "#00f5d4", marginBottom: "10px" }}>🏆景品</h3>
+              <ul style={{ marginBottom: "20px", paddingLeft: "20px" }}>
+                <li>スタンプが10個貯まると景品ゲット！</li>
+                <li>BINGOを達成すると景品ゲット！</li>
+                <li>景品交換所は6号館１階</li>
+              </ul>
+
+              <h3 style={{ color: "#00f5d4", marginBottom: "10px" }}>⚠️ 注意事項</h3>
+              <ul style={{ marginBottom: "20px", paddingLeft: "20px" }}>
+                <li>同じQRコードは一度しか使用できません</li>
+                <li>使用済みQRコードは記録されます</li>
+                <li>データはブラウザに自動保存されます</li>
+                <li>ブラウザを閉じても進行状況は保持されます</li>
+              </ul>
+            </div>
+
+            <button
+              onClick={() => setShowRules(false)}
+              style={{
+                background: "#08f7fe",
+                border: "none",
+                color: "#000",
+                padding: "12px 24px",
+                borderRadius: "8px",
+                cursor: "pointer",
+                fontFamily: "DotGothic16, monospace",
+                fontSize: "16px",
+                fontWeight: "bold",
+                width: "100%",
+                marginTop: "20px",
+                boxShadow: "0 0 10px rgba(8, 247, 254, 0.6)"
+              }}
+            >
+              ルールを閉じる
+            </button>
+          </div>
+        </div>
+      )}
+
       <Navigation squares1={squares1} squares2={squares2} />
 
       <div className="main-3d-container"> 
@@ -143,6 +235,37 @@ export default function App() {
             <Route path="/card2" element={<Card2 squares={squares2} setSquares={setSquares2} bingoManager={bingoManager} cardType="card2" />} />
             <Route path="/QR" element={<QR />} />
           </Routes>
+        </div>
+        
+        {/* ルール説明ボタン - カードの下に配置 */}
+        <div style={{ textAlign: "center", marginTop: "20px", paddingBottom: "20px" }}>
+          <button
+            onClick={() => setShowRules(true)}
+            style={{
+              background: "rgba(8, 247, 254, 0.8)",
+              border: "2px solid #08f7fe",
+              color: "#000",
+              padding: "12px 30px",
+              borderRadius: "10px",
+              cursor: "pointer",
+              fontFamily: "DotGothic16, monospace",
+              fontSize: "16px",
+              fontWeight: "bold",
+              boxShadow: "0 0 15px rgba(8, 247, 254, 0.6)",
+              transition: "all 0.3s ease",
+              margin: "0 auto"
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.background = "rgba(8, 247, 254, 1)";
+              e.target.style.transform = "scale(1.05)";
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.background = "rgba(8, 247, 254, 0.8)";
+              e.target.style.transform = "scale(1)";
+            }}
+          >
+            📋 ルール説明
+          </button>
         </div>
       </div>
       

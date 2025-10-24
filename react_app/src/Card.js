@@ -8,7 +8,18 @@ function Square({ value, onClick, index }) {
   
   return (
     <button className={`square ${isClicked ? 'clicked' : ''} ${isFreeSpace ? 'free-space' : ''}`}>
-      {value ? <img src={value} alt="stamp" style={{ width: "70%", height: "70%" }} /> : null}
+      {value ? (
+        <img src={value} alt="stamp" style={{ width: "70%", height: "70%" }} />
+      ) : (
+        <span style={{ 
+          fontSize: "2rem", 
+          color: "#08f7fe", 
+          fontWeight: "bold",
+          textShadow: "0 0 10px rgba(8, 247, 254, 0.8)"
+        }}>
+          ？
+        </span>
+      )}
     </button>
   );
 }
