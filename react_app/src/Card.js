@@ -37,10 +37,6 @@ export default function Card({ squares, setSquares, bingoManager, cardType }) {
      "10016": 15, "10017": 16, "10018": 17, "10019": 18, "10020": 19,
      "10021": 20, "10022": 21, "10023": 22, "10024": 23, "10013": 24,
 
-     // レガシーID
-     "12345": 12,  // 中央
-     "12346": 12,  // 中央
-     "99999": 12,  // 管理者用（中央）
    };
    
    
@@ -59,7 +55,7 @@ export default function Card({ squares, setSquares, bingoManager, cardType }) {
            nextSquares[targetSquareIndex] = "/NKC2.png";
            setSquares(nextSquares);
            
-           // LocalBingoManagerでデータを保存
+           // データを保存
            if (bingoManager) {
              bingoManager.saveBingoCard(cardType, nextSquares);
            }
@@ -79,7 +75,7 @@ export default function Card({ squares, setSquares, bingoManager, cardType }) {
     nextSquares[i] = "/NKC2.png";
     setSquares(nextSquares);
     
-    // LocalBingoManagerでデータを保存
+    //データを保存
     if (bingoManager) {
       bingoManager.saveBingoCard(cardType, nextSquares);
     }

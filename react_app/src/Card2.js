@@ -36,11 +36,6 @@ export default function Card2({ squares, setSquares, bingoManager, cardType }) {
      "50016": 15, "50017": 16, "50018": 17, "50019": 18, "50020": 19,
      "50021": 20, "50022": 21, "50023": 22, "50024": 23, "50013": 24,
      
-     // Card2専用レガシーID
-     "54321": 12,  // 中央
-     "65432": 12,  // 中央
-     "88888": 12,  // 管理者用（中央）
-     
    };
    
     useEffect(() => {
@@ -58,7 +53,7 @@ export default function Card2({ squares, setSquares, bingoManager, cardType }) {
            nextSquares[targetSquareIndex] = "/NKC2.png";
            setSquares(nextSquares);
            
-           // LocalBingoManagerでデータを保存
+          //データを保存
            if (bingoManager) {
              bingoManager.saveBingoCard(cardType, nextSquares);
            }
@@ -68,7 +63,7 @@ export default function Card2({ squares, setSquares, bingoManager, cardType }) {
        } else {
          console.log("Card2.js - 対応表にないQRコード:", qrData);
        }
-       // 対応表にない場合は何もしない（スタンプを配置しない）
+       // 対応表にない場合は何もしない
      }
    }, [qrData, squares, setSquares]);
 
@@ -78,7 +73,7 @@ export default function Card2({ squares, setSquares, bingoManager, cardType }) {
     nextSquares[i] = "/NKC2.png";
     setSquares(nextSquares);
     
-    // LocalBingoManagerでデータを保存
+    //データを保存
     if (bingoManager) {
       bingoManager.saveBingoCard(cardType, nextSquares);
     }
