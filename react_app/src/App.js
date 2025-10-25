@@ -24,7 +24,6 @@ function bingo_judge(squares) {
 
 
 function Square({ value, onClick, index }) {
-  //真ん中にスタンプを押す
   const isFreeSpace = index === 12;
   const isClicked = !!value; 
   
@@ -116,7 +115,6 @@ export default function App() {
     const manager = new LocalBingoManager();
     setBingoManager(manager);
     
-    // 保存されたデータを復元
     const card1Data = manager.getCardData('card1');
     const card2Data = manager.getCardData('card2');
     
