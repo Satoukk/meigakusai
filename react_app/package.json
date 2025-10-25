@@ -40,7 +40,10 @@
   },
   "devDependencies": {
     "@pmmmwh/react-refresh-webpack-plugin": "^0.6.1",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
     "react-scripts": "^5.0.1",
-    "source-map": "^0.6.1"
+    "source-map": "^0.6.1",
+    "typescript": "^5.9.3"
   }
 }
