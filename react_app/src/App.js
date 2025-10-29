@@ -3,7 +3,6 @@ import QR from "./QR.tsx";
 import Card from "./Card.js";
 import Card2 from "./Card2.js";
 import { LocalBingoManager } from "./LocalBingoManager.js";
-import BingoStats from "./BingoStats.js";
 import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
 /* ビンゴを判定*/
 function bingo_judge(squares) {
@@ -104,7 +103,7 @@ export default function App() {
   const [squares1, setSquares1] = useState(Array(25).fill(null));
   const [squares2, setSquares2] = useState(Array(25).fill(null));
   const [bingoManager, setBingoManager] = useState(null);
-  const [showRules, setShowRules] = useState(false);
+  const [showRules, setShowRules] = useState(true);
 
   // センターフリースペースの設定
   if (!squares1[12]) squares1[12] = "/NKC2.png";
@@ -123,6 +122,12 @@ export default function App() {
     }
     if (card2Data?.squares) {
       setSquares2(card2Data.squares);
+    }
+    
+    // 初回表示の判定
+    const hasSeenRules = localStorage.getItem('hasSeenRules');
+    if (hasSeenRules) {
+      setShowRules(false);
     }
     
     console.log('ローカルデータを復元しました');
@@ -202,7 +207,10 @@ export default function App() {
             </div>
 
             <button
-              onClick={() => setShowRules(false)}
+              onClick={() => {
+                setShowRules(false);
+                localStorage.setItem('hasSeenRules', 'true');
+              }}
               style={{
                 background: "#08f7fe",
                 border: "none",
@@ -267,10 +275,12 @@ export default function App() {
         </div>
       </div>
       
-      {/* 統計情報コンポーネント */}
-      <BingoStats bingoManager={bingoManager} />
-      
       <style jsx="true">{`
+        html {
+            overflow-y: auto;
+            height: auto;
+        }
+        
         :root {
             --neon-cyan: #08f7fe;
             --bg-dark: #010408;
@@ -279,14 +289,16 @@ export default function App() {
 
         body {
             display: flex;
-            justify-content: center;
-            align-items: center;
+            justify-content: flex-start;
+            align-items: stretch;
             flex-direction: column;
             min-height: 100vh;
             margin: 0;
             padding-top: 100px; 
+            padding-bottom: 50px;
             background: radial-gradient(circle at center, #000000 0%, #010408 100%);
             overflow-x: hidden;
+            overflow-y: auto;
             font-family: var(--main-font);
             color: var(--neon-cyan);
             perspective: 1000px;
@@ -316,6 +328,11 @@ export default function App() {
           transform: rotateX(5deg) translateY(-20px); /* 画面を少し傾けてコンソール感を出す */
           transition: transform 0.5s ease-out;
           box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5); /* 影で浮いているように見せる */
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin-top: 20px;
         }
 
         .navigation-bar {
@@ -335,7 +352,7 @@ export default function App() {
         }
         
         .card-wrapper {
-            padding: 20px;
+            padding: 15px;
             background: rgba(10, 20, 30, 0.8);
             border-radius: 16px;
             backdrop-filter: blur(10px);
@@ -344,7 +361,7 @@ export default function App() {
                 0 0 10px rgba(8, 247, 254, 0.6),
                 0 0 30px rgba(8, 247, 254, 0.4),
                 inset 0 0 15px rgba(8, 247, 254, 0.2);
-            margin: 20px auto;
+            margin: 15px auto;
             width: fit-content;
             max-width: 95vw;
             box-sizing: border-box;
@@ -353,8 +370,8 @@ export default function App() {
         .board-grid {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
-            width: 550px; 
+            gap: 6px;
+            width: 420px; 
             margin: 0 auto;
         }
 
@@ -412,16 +429,16 @@ export default function App() {
         .status {
             text-align: center;
             font-family: 'Rampart One', sans-serif; /* BINGO!をより目立つフォントに変更 */
-            font-size: 3.5rem;
+            font-size: 2.8rem;
             font-weight: bold;
             color: #aaff00; /* BINGO時はライムグリーン */
             text-shadow: 
                 0 0 10px #aaff00, 
                 0 0 30px #aaff00,
                 0 0 60px rgba(170, 255, 0, 0.8);
-            margin-bottom: 40px;
+            margin-bottom: 30px;
             animation: glowText 0.8s ease-in-out infinite alternate; /* 点滅速度を上げる */
-            letter-spacing: 5px; /* 字間を広げる */
+            letter-spacing: 4px; /* 字間を広げる */
             text-transform: uppercase;
         }
 
@@ -443,14 +460,14 @@ export default function App() {
             }
 
             .board-grid {
-                width: 95vw; 
-                max-width: 450px;
-                gap: 4px;
+                width: 90vw; 
+                max-width: 350px;
+                gap: 3px;
             }
 
             .status {
-                font-size: 1.8rem;
-                margin-bottom: 15px;
+                font-size: 1.5rem;
+                margin-bottom: 10px;
                 letter-spacing: 2px;
             }
 

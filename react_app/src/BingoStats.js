@@ -43,72 +43,134 @@ const BingoStats = ({ bingoManager }) => {
 
   return (
     <div style={{
-      position: 'fixed',
-      bottom: '20px',
-      right: '20px',
-      background: 'rgba(0, 0, 0, 0.9)',
+      background: 'rgba(1, 4, 8, 0.95)',
       border: '2px solid #08f7fe',
-      borderRadius: '10px',
-      padding: '15px',
+      borderRadius: '12px',
+      padding: '15px 20px',
       color: '#08f7fe',
       fontFamily: 'DotGothic16, monospace',
       fontSize: '0.9rem',
-      maxWidth: '300px',
-      zIndex: 1000
+      maxWidth: '600px',
+      width: '90%',
+      margin: '0 auto',
+      backdropFilter: 'blur(10px)',
+      boxShadow: '0 0 15px rgba(8, 247, 254, 0.3)',
+      zIndex: 100
     }}>
       <div 
         onClick={() => setShowDetails(!showDetails)}
-        style={{ cursor: 'pointer', marginBottom: '10px' }}
+        style={{ 
+          cursor: 'pointer', 
+          marginBottom: showDetails ? '15px' : '0',
+          textAlign: 'center',
+          fontSize: '1rem',
+          fontWeight: 'bold',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          gap: '10px'
+        }}
       >
-        📊 統計情報 {showDetails ? '▼' : '▶'}
+        📊 統計情報 
+        <span style={{ 
+          fontSize: '0.8rem',
+          color: showDetails ? '#00f5d4' : '#08f7fe',
+          transition: 'all 0.2s ease'
+        }}>
+          {showDetails ? '▼ 閉じる' : '▶ 詳細表示'}
+        </span>
       </div>
       
       {showDetails && (
-        <div>
-          <div style={{ marginBottom: '10px' }}>
-            <strong>全体統計:</strong><br/>
-            総ライン数: {stats.player?.totalLines || 0}<br/>
-            総スタンプ数: {stats.player?.totalStamps || 0}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '15px' }}>
+          <div style={{ 
+            textAlign: 'center',
+            padding: '10px',
+            background: 'rgba(8, 247, 254, 0.1)',
+            borderRadius: '8px',
+            border: '1px solid rgba(8, 247, 254, 0.3)'
+          }}>
+            <div style={{ color: '#00f5d4', fontWeight: 'bold', marginBottom: '5px' }}>全体統計</div>
+            <div>総ライン: {stats.player?.totalLines || 0}</div>
+            <div>総スタンプ: {stats.player?.totalStamps || 0}</div>
           </div>
           
-          <div style={{ marginBottom: '10px' }}>
-            <strong>カード1:</strong><br/>
-            ライン: {stats.card1?.lines || 0} | スタンプ: {stats.card1?.totalStamps || 0}
+          <div style={{ 
+            textAlign: 'center',
+            padding: '10px',
+            background: 'rgba(0, 245, 212, 0.1)',
+            borderRadius: '8px',
+            border: '1px solid rgba(0, 245, 212, 0.3)'
+          }}>
+            <div style={{ color: '#00f5d4', fontWeight: 'bold', marginBottom: '5px' }}>カード1</div>
+            <div>ライン: {stats.card1?.lines || 0}</div>
+            <div>スタンプ: {stats.card1?.totalStamps || 0}</div>
           </div>
           
-          <div style={{ marginBottom: '15px' }}>
-            <strong>カード2:</strong><br/>
-            ライン: {stats.card2?.lines || 0} | スタンプ: {stats.card2?.totalStamps || 0}
+          <div style={{ 
+            textAlign: 'center',
+            padding: '10px',
+            background: 'rgba(170, 255, 0, 0.1)',
+            borderRadius: '8px',
+            border: '1px solid rgba(170, 255, 0, 0.3)'
+          }}>
+            <div style={{ color: '#00f5d4', fontWeight: 'bold', marginBottom: '5px' }}>カード2</div>
+            <div>ライン: {stats.card2?.lines || 0}</div>
+            <div>スタンプ: {stats.card2?.totalStamps || 0}</div>
           </div>
           
-          <div style={{ display: 'flex', gap: '5px', flexDirection: 'column' }}>
+          <div style={{ 
+            display: 'flex', 
+            gap: '10px', 
+            justifyContent: 'center',
+            gridColumn: '1 / -1',
+            marginTop: '10px'
+          }}>
             <button 
               onClick={exportData}
               style={{
-                background: 'transparent',
+                background: 'rgba(8, 247, 254, 0.2)',
                 border: '1px solid #08f7fe',
                 color: '#08f7fe',
-                padding: '5px 10px',
-                borderRadius: '5px',
+                padding: '8px 15px',
+                borderRadius: '6px',
                 cursor: 'pointer',
-                fontSize: '0.8rem'
+                fontSize: '0.8rem',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.background = 'rgba(8, 247, 254, 0.4)';
+                e.target.style.transform = 'scale(1.05)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = 'rgba(8, 247, 254, 0.2)';
+                e.target.style.transform = 'scale(1)';
               }}
             >
-              データ出力
+              📥 データ出力
             </button>
             <button 
               onClick={resetData}
               style={{
-                background: 'transparent',
+                background: 'rgba(255, 68, 68, 0.2)',
                 border: '1px solid #ff4444',
                 color: '#ff4444',
-                padding: '5px 10px',
-                borderRadius: '5px',
+                padding: '8px 15px',
+                borderRadius: '6px',
                 cursor: 'pointer',
-                fontSize: '0.8rem'
+                fontSize: '0.8rem',
+                transition: 'all 0.2s ease'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.background = 'rgba(255, 68, 68, 0.4)';
+                e.target.style.transform = 'scale(1.05)';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.background = 'rgba(255, 68, 68, 0.2)';
+                e.target.style.transform = 'scale(1)';
               }}
             >
-              データリセット
+              🗑️ データリセット
             </button>
           </div>
         </div>
