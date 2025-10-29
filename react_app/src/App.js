@@ -1,5 +1,118 @@
 
-// import React, { useState } from "react";
+import React from "react";
+
+export default function App() {
+  return (
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      minHeight: '100vh',
+      background: 'radial-gradient(circle at center, #000000 0%, #010408 100%)',
+      fontFamily: 'DotGothic16, monospace',
+      color: '#08f7fe',
+      flexDirection: 'column'
+    }}>
+      {/* フォントを読み込み */}
+      <link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Train+One&family=Rampart+One&display=swap" rel="stylesheet" />
+      
+      {/* 準備中メッセージ */}
+      <div style={{
+        textAlign: 'center',
+        padding: '40px',
+        background: 'rgba(1, 4, 8, 0.9)',
+        border: '3px solid #08f7fe',
+        borderRadius: '20px',
+        boxShadow: '0 0 30px rgba(8, 247, 254, 0.6)',
+        maxWidth: '500px',
+        width: '90%'
+      }}>
+        <div style={{
+          fontSize: '3rem',
+          marginBottom: '20px',
+          color: '#08f7fe',
+          textShadow: '0 0 10px rgba(8, 247, 254, 0.8)',
+          animation: 'pulse 2s infinite'
+        }}>
+          🔧
+        </div>
+        
+        <h1 style={{
+          fontSize: '2.5rem',
+          marginBottom: '20px',
+          color: '#08f7fe',
+          textShadow: '0 0 15px rgba(8, 247, 254, 0.8)',
+          letterSpacing: '2px'
+        }}>
+          準備中
+        </h1>
+        
+        <p style={{
+          fontSize: '1.5rem',
+          marginBottom: '30px',
+          color: '#00f5d4',
+          lineHeight: '1.6'
+        }}>
+          ちょっと待ってね！
+        </p>
+        
+        <div style={{
+          fontSize: '1rem',
+          color: '#08f7fe',
+          opacity: 0.8
+        }}>
+          システムを準備しています...
+        </div>
+        
+        {/* ローディングバー */}
+        <div style={{
+          width: '100%',
+          height: '4px',
+          background: 'rgba(8, 247, 254, 0.2)',
+          borderRadius: '2px',
+          marginTop: '20px',
+          overflow: 'hidden'
+        }}>
+          <div style={{
+            width: '30%',
+            height: '100%',
+            background: 'linear-gradient(90deg, #08f7fe, #00f5d4)',
+            borderRadius: '2px',
+            animation: 'loading 2s ease-in-out infinite'
+          }}></div>
+        </div>
+      </div>
+      
+      <style jsx="true">{`
+        @keyframes pulse {
+          0%, 100% { 
+            transform: scale(1);
+            opacity: 1;
+          }
+          50% { 
+            transform: scale(1.1);
+            opacity: 0.8;
+          }
+        }
+        
+        @keyframes loading {
+          0% { 
+            transform: translateX(-100%);
+          }
+          100% { 
+            transform: translateX(400%);
+          }
+        }
+        
+        body {
+          margin: 0;
+          padding: 0;
+          overflow: hidden;
+        }
+      `}</style>
+    </div>
+  );
+}
 // import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
 // /* ビンゴを判定*/
 // function bingo_judge(squares) {
