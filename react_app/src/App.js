@@ -106,8 +106,8 @@ export default function App() {
   const [showRules, setShowRules] = useState(true);
 
   // センターフリースペースの設定
-  if (!squares1[12]) squares1[12] = "/NKC2.png";
-  if (!squares2[12]) squares2[12] = "/NKC2.png";
+  if (!squares1[12]) squares1[12] = "/pbe.png";
+  if (!squares2[12]) squares2[12] = "/pbe.png";
 
   // LocalBingoManagerの初期化とデータ復元
   useEffect(() => {
@@ -192,8 +192,8 @@ export default function App() {
 
               <h3 style={{ color: "#00f5d4", marginBottom: "10px" }}>🏆景品</h3>
               <ul style={{ marginBottom: "20px", paddingLeft: "20px" }}>
-                <li>スタンプが10（真ん中のスタンプを入れてもOK！）個貯まると景品ゲット！</li>
-                <li>BINGOを３個を達成すると先着４名景品ゲット！</li>
+                <li>ビンゴカード1,2で合計10（真ん中のスタンプを入れてもOK！）個貯まると景品ゲット！</li>
+                <li>BINGOを達成しても景品ゲット</li>
                 <li>景品交換所は6号館１階</li>
               </ul>
 

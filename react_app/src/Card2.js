@@ -50,7 +50,7 @@ export default function Card2({ squares, setSquares, bingoManager, cardType }) {
          if (!squares[targetSquareIndex]) {
            console.log("Card2.js - スタンプ配置実行 マス", targetSquareIndex);
            const nextSquares = squares.slice();
-           nextSquares[targetSquareIndex] = "/NKC2.png";
+           nextSquares[targetSquareIndex] = "/pbe.png";
            setSquares(nextSquares);
            
           //データを保存
@@ -70,7 +70,7 @@ export default function Card2({ squares, setSquares, bingoManager, cardType }) {
   function handleClick(i) {
     if (squares[i] || calculateWinner(squares)) return;
     const nextSquares = squares.slice();
-    nextSquares[i] = "/NKC2.png";
+    nextSquares[i] = "/pbe.png";
     setSquares(nextSquares);
     
     //データを保存
