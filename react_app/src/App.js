@@ -184,7 +184,7 @@ export default function App() {
 
               <h3 style={{ color: "#00f5d4", marginBottom: "10px" }}>🎮 ゲームの進め方</h3>
               <ul style={{ marginBottom: "20px", paddingLeft: "20px" }}>
-                <li>会場内のQRコードを見つけて読み取ろう</li>
+                <li>各店舗のQRコードを見つけて読み取ろう</li>
                 <li>ビンゴカード1とカード2の両方が利用できます</li>
                 <li>横・縦・斜めのいずれかが揃うとビンゴ完成！</li>
                 <li>複数のラインでビンゴを目指そう</li>
@@ -193,7 +193,7 @@ export default function App() {
               <h3 style={{ color: "#00f5d4", marginBottom: "10px" }}>🏆景品</h3>
               <ul style={{ marginBottom: "20px", paddingLeft: "20px" }}>
                 <li>スタンプが10個貯まると景品ゲット！</li>
-                <li>BINGOを達成すると景品ゲット！</li>
+                <li>BINGOを３個を達成すると先着４名景品ゲット！</li>
                 <li>景品交換所は6号館１階</li>
               </ul>
 
