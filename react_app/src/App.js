@@ -242,7 +242,7 @@ export default function App() {
             <Route path="/card2" element={<Card2 squares={squares2} setSquares={setSquares2} bingoManager={bingoManager} cardType="card2" />} />
             <Route path="/QR" element={<QR />} />
           </Routes>
->>>>>>> develop
+ develop
         </div>
         
         {/* ルール説明ボタン - カードの下に配置 */}
@@ -278,17 +278,6 @@ export default function App() {
       </div>
       
       <style jsx="true">{`
-<<<<<<< HEAD
-        @keyframes pulse {
-          0%, 100% { 
-            transform: scale(1);
-            opacity: 1;
-          }
-          50% { 
-            transform: scale(1.1);
-            opacity: 0.8;
-          }
-=======
         html {
             overflow-y: auto;
             height: auto;
@@ -311,11 +300,7 @@ export default function App() {
         }
         
         body {
-<<<<<<< HEAD
-          margin: 0;
-          padding: 0;
-          overflow: hidden;
-=======
+
             display: flex;
             justify-content: flex-start;
             align-items: stretch;
@@ -509,10 +494,9 @@ export default function App() {
                 border-radius: 5px;
                 box-shadow: inset 0 0 5px rgba(0, 255, 200, 0.2), 0 0 3px rgba(0, 255, 200, 0.2);
             }
->>>>>>> develop
         }
       `}</style>
-    </div>
+    </BrowserRouter>
   );
 }
 // import { BrowserRouter, Routes, Route, Link, useLocation } from "react-router-dom";
