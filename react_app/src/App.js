@@ -242,7 +242,6 @@ export default function App() {
             <Route path="/card2" element={<Card2 squares={squares2} setSquares={setSquares2} bingoManager={bingoManager} cardType="card2" />} />
             <Route path="/QR" element={<QR />} />
           </Routes>
- develop
         </div>
         
         {/* ルール説明ボタン - カードの下に配置 */}
@@ -287,7 +286,6 @@ export default function App() {
             --neon-cyan: #08f7fe;
             --bg-dark: #010408;
             --main-font: 'DotGothic16', monospace;
->>>>>>> develop
         }
         
         @keyframes loading {

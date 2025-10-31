@@ -151,4 +151,3 @@ function countBingoLines(squares) {
   }
   return bingoCount;
 }
- develop
