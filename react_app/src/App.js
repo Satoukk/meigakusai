@@ -193,8 +193,8 @@ export default function App() {
 
               <h3 style={{ color: "#00f5d4", marginBottom: "10px" }}>🏆景品</h3>
               <ul style={{ marginBottom: "20px", paddingLeft: "20px" }}>
-                <li>ビンゴカード1,2で合計10（真ん中のスタンプを入れてもOK！）個貯まると景品ゲット！</li>
-                <li>BINGOを達成しても景品ゲット</li>
+                <li>ビンゴカード1,2で合計5個（真ん中のスタンプを入れてもOK！）個貯まると景品ゲット！</li>
+                <li>BINGOを達成したら先着４名景品ゲット</li>
                 <li>景品交換所は6号館１階</li>
               </ul>
 
