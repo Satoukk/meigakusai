@@ -178,7 +178,7 @@ export default function App() {
             <div style={{ textAlign: "left", lineHeight: "1.6", fontSize: "14px" }}>
               <h3 style={{ color: "#00f5d4", marginBottom: "10px" }}>📱 QRコードの読み取り方法</h3>
               <ul style={{ marginBottom: "20px", paddingLeft: "20px" }}>
-                <li>「QRコード読み取り」ページでQRコードをスキャン</li>
+                <li>「スキャン」ページでQRコードをスキャン</li>
                 <li>正常に読み取れると自動的にビンゴカードに移動</li>
                 <li>対応するマスにスタンプが押されます</li>
               </ul>
