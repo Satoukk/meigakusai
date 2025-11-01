@@ -190,13 +190,6 @@ export default function App() {
                 <li>景品交換所は6号館１階</li>
               </ul>
 
-              <h3 style={{ color: "#00f5d4", marginBottom: "10px" }}>⚠️ 注意事項</h3>
-              <ul style={{ marginBottom: "20px", paddingLeft: "20px" }}>
-                <li>同じQRコードは一度しか使用できません</li>
-                <li>使用済みQRコードは記録されます</li>
-                <li>データはブラウザに自動保存されます</li>
-                <li>ブラウザを閉じても進行状況は保持されます</li>
-              </ul>
             </div>
 
             <button
