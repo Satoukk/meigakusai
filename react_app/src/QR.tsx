@@ -97,8 +97,8 @@ export default function QRReader() {
         writingMode: "horizontal-tb",
         textOrientation: "mixed",
         fontFamily: "'DotGothic16', monospace",
-        fontSize: "clamp(1.2rem, 4vw, 2rem)",
-        margin: "20px 0"
+        fontSize: "clamp(0.8rem, 2.5vw, 1.2rem)",
+        margin: "10px 0"
       }}>
         QRコードをスキャンしてください
       </h2>
