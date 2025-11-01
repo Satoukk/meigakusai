@@ -93,7 +93,15 @@ export default function QRReader() {
 
   return (
     <div style={{ height: "100vh", textAlign: "center" }}>
-      <h2>QRコードをスキャンしてください</h2>
+      <h2 style={{ 
+        writingMode: "horizontal-tb",
+        textOrientation: "mixed",
+        fontFamily: "'DotGothic16', monospace",
+        fontSize: "clamp(1.2rem, 4vw, 2rem)",
+        margin: "20px 0"
+      }}>
+        QRコードをスキャンしてください
+      </h2>
       <div style={{ width: 320, height: 320, margin: "0 auto" }}>
         <Scanner
           onScan={handleScan}
