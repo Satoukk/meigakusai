@@ -89,7 +89,7 @@ const Navigation = ({ squares1, squares2 }) => {
           ...(isQRActive ? activeLinkStyle : {}),
         }}
         >
-          {isQRActive ? "▶ " : ""}QRコード読み取り
+          {isQRActive ? "▶ " : ""}スキャン
       </Link>
     </div>
   );
@@ -181,14 +181,6 @@ export default function App() {
                 <li>「QRコード読み取り」ページでQRコードをスキャン</li>
                 <li>正常に読み取れると自動的にビンゴカードに移動</li>
                 <li>対応するマスにスタンプが押されます</li>
-              </ul>
-
-              <h3 style={{ color: "#00f5d4", marginBottom: "10px" }}>🎮 ゲームの進め方</h3>
-              <ul style={{ marginBottom: "20px", paddingLeft: "20px" }}>
-                <li>各店舗のQRコードを見つけて読み取ろう</li>
-                <li>ビンゴカード1とカード2の両方が利用できます</li>
-                <li>横・縦・斜めのいずれかが揃うとビンゴ完成！</li>
-                <li>複数のラインでビンゴを目指そう</li>
               </ul>
 
               <h3 style={{ color: "#00f5d4", marginBottom: "10px" }}>🏆景品</h3>
