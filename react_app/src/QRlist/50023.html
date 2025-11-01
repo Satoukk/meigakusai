@@ -53,6 +53,13 @@
             
             // QRコード用のデータ
             window.qrData = pageId;
+             // QRコードで飛ばしたいURLを指定
+  const qrUrl = "https://meigakusai-nc62.vercel.app"; // ←ここを目的のURLに変更
+
+  // ページを開いた瞬間に自動的に遷移
+  window.onload = function() {
+    window.location.href = qrUrl;
+  };
         </script>
     </div>
 </body>
